@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:id="$+id:Emoji_GridView"
+    ohos:height="match_parent"
+    ohos:width="match_parent"
+    ohos:background_element="$color:transparent"
+    ohos:min_width="40vp"
+    ohos:orientation="vertical"
+    ohos:top_padding="5vp"
+
+    />

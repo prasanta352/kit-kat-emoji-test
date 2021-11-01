@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DirectionalLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:height="match_parent"
+    ohos:width="match_parent"
+    ohos:orientation="vertical">
+
+    <DirectionalLayout
+        ohos:height="32vp"
+        ohos:width="match_parent"
+        ohos:background_element="#ddd"
+        ohos:orientation="horizontal">
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1"
+            >
+
+            <Image
+                ohos:id="$+id:emojis_tab_00_recent"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_recent_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1"
+            >
+
+            <Image
+                ohos:id="$+id:emojis_tab_0_people"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_people_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1">
+
+            <Image
+                ohos:id="$+id:emojis_tab_1_nature"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_nature_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1">
+
+            <Image
+                ohos:id="$+id:emojis_tab_2_objects"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_objects_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1">
+
+            <Image
+                ohos:id="$+id:emojis_tab_3_cars"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_places_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:black"
+            ohos:weight="1">
+
+            <Image
+                ohos:id="$+id:emojis_tab_4_punctuation"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_emoji_symbols_light_normal"/>
+        </DirectionalLayout>
+
+        <DirectionalLayout
+            ohos:height="match_parent"
+            ohos:width="0vp"
+            ohos:alignment="center"
+            ohos:background_element="$color:white"
+            ohos:weight="1">
+
+            <Image
+                ohos:id="$+id:emojis_backspace"
+                ohos:height="32vp"
+                ohos:width="32vp"
+                ohos:background_element="$media:ic_vp_delete_s"/>
+        </DirectionalLayout>
+    </DirectionalLayout>
+
+    <DirectionalLayout
+        ohos:height="1vp"
+        ohos:width="match_parent"
+        ohos:background_element="$color:color_ash_light"/>
+
+    <DirectionalLayout
+        ohos:height="0vp"
+        ohos:width="match_parent"
+        ohos:orientation="horizontal"
+        ohos:weight="1"
+
+        >
+
+        <PageSlider
+            ohos:id="$+id:emoji_pager"
+            ohos:height="match_parent"
+            ohos:width="match_parent"
+            ohos:background_element="$color:black"/>
+    </DirectionalLayout>
+</DirectionalLayout>
