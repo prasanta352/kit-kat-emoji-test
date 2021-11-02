@@ -17,10 +17,11 @@
             ohos:alignment="center"
             ohos:background_element="$color:black"
             ohos:weight="1"
+            ohos:id="$+id:emojis_tab_00_recent"
             >
 
             <Image
-                ohos:id="$+id:emojis_tab_00_recent"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_recent_light_normal"/>
@@ -32,10 +33,11 @@
             ohos:alignment="center"
             ohos:background_element="$color:black"
             ohos:weight="1"
+            ohos:id="$+id:emojis_tab_0_people"
             >
 
             <Image
-                ohos:id="$+id:emojis_tab_0_people"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_people_light_normal"/>
@@ -46,10 +48,11 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
+            ohos:id="$+id:emojis_tab_1_nature"
             ohos:weight="1">
 
             <Image
-                ohos:id="$+id:emojis_tab_1_nature"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_nature_light_normal"/>
@@ -60,10 +63,11 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
+            ohos:id="$+id:emojis_tab_2_objects"
             ohos:weight="1">
 
             <Image
-                ohos:id="$+id:emojis_tab_2_objects"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_objects_light_normal"/>
@@ -74,10 +78,11 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
+            ohos:id="$+id:emojis_tab_3_cars"
             ohos:weight="1">
 
             <Image
-                ohos:id="$+id:emojis_tab_3_cars"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_places_light_normal"/>
@@ -88,10 +93,11 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
+            ohos:id="$+id:emojis_tab_4_punctuation"
             ohos:weight="1">
 
             <Image
-                ohos:id="$+id:emojis_tab_4_punctuation"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_emoji_symbols_light_normal"/>
@@ -102,10 +108,11 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:white"
+            ohos:id="$+id:emojis_backspace"
             ohos:weight="1">
 
             <Image
-                ohos:id="$+id:emojis_backspace"
+
                 ohos:height="32vp"
                 ohos:width="32vp"
                 ohos:background_element="$media:ic_vp_delete_s"/>
