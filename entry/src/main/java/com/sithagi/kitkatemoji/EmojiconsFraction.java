@@ -47,23 +47,23 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         listContainer.setLayoutConfig(new ComponentContainer.LayoutConfig(
                 ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_PARENT
         ));
-        ArrayList<Emojicon> emojicons = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            emojicons.add(new Emojicon(getIcon(index)));
-        }
-        int Height = Utils.getScreenHeight(context);
-        int Width = Utils.getScreenWidth(context);
-        int cols = (int) Width / 50;
-        HiLog.warn(LABEL_LOG, "Height: " + Height);
-        HiLog.warn(LABEL_LOG, "Width: " + Width);
-        HiLog.warn(LABEL_LOG, "cols: " + cols);
-
-        TableLayoutManager tableLayoutManager = new TableLayoutManager();
-        tableLayoutManager.setColumnCount(cols);
-        tableLayoutManager.setRowCount(emojicons.size()/cols);
-        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(emojicons, context);
-        listContainer.setLayoutManager(tableLayoutManager);
-        listContainer.setItemProvider(emojiIconProvider);
+//        ArrayList<Emojicon> emojicons = new ArrayList<>();
+//        for (int i = 0; i < 50; i++) {
+//            emojicons.add(new Emojicon(getIcon(index)));
+//        }
+//        int Height = Utils.getScreenHeight(context);
+//        int Width = Utils.getScreenWidth(context);
+//        int cols = (int) Width / 50;
+//        HiLog.warn(LABEL_LOG, "Height: " + Height);
+//        HiLog.warn(LABEL_LOG, "Width: " + Width);
+//        HiLog.warn(LABEL_LOG, "cols: " + cols);
+//
+//        TableLayoutManager tableLayoutManager = new TableLayoutManager();
+//        tableLayoutManager.setColumnCount(cols);
+//        tableLayoutManager.setRowCount(emojicons.size()/cols);
+//        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(emojicons, context);
+//        listContainer.setLayoutManager(tableLayoutManager);
+//        listContainer.setItemProvider(emojiIconProvider);
         return listContainer;
     }
 
@@ -80,7 +80,7 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         PageSlider pageSlider = (PageSlider) rootComponent.findComponentById(ResourceTable.Id_emoji_pager);
         pageSlider.addPageChangedListener(this);
 
-        List<Component> emojiGridFractions = new ArrayList<>();
+        List< EmojiconGridFraction> emojiGridFractions = new ArrayList<>();
 
 
         mEmojiTabs = new DirectionalLayout[6];
@@ -95,7 +95,27 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         for (int i = 0; i < mEmojiTabs.length; i++) {
             final int position = i;
             mEmojiTabs[i].setClickedListener(c -> pageSlider.setCurrentPage(position));
-            emojiGridFractions.add(build(getContext(), i));
+            List<Emojicon> emojicons = new ArrayList<>();
+            for (int j = 0; j < 50; j++) {
+                emojicons.add(new Emojicon(getIcon(i)));
+            }
+            try {
+                if(emojicons == null){
+
+                    HiLog.warn(LABEL_LOG, "emojicons == null ?: " + i+emojicons);
+                }
+
+                HiLog.warn(LABEL_LOG, "cols: " + emojicons.size()+emojicons);
+                Emojicon[] emojicons1 = new Emojicon[emojicons.size()];
+                emojicons.toArray(emojicons1);
+                emojiGridFractions.add(
+
+                        EmojiconGridFraction.newInstance(getContext(),emojicons1)
+                );
+            }catch (Exception ex){
+
+                HiLog.warn(LABEL_LOG, "Exception: " + ex);
+            }
         }
 
 
@@ -156,9 +176,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     private static class EmojiPagerAdapter extends PageSliderProvider {
         //        private final Context context;
-        private final List<Component> fractions;
+        private final List< EmojiconGridFraction> fractions;
 
-        public EmojiPagerAdapter(List<Component> fractions) {
+        public EmojiPagerAdapter(List< EmojiconGridFraction> fractions) {
             this.fractions = fractions;
         }
 
@@ -172,7 +192,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         public Object createPageInContainer(ComponentContainer componentContainer, int i) {
             try {
 
-                Component component = fractions.get(i);
+                EmojiconGridFraction component = fractions.get(i);
+
                 componentContainer.addComponent(component);
             } catch (Exception ex) {
                 HiLog.warn(LABEL_LOG, "Exception: " + ex);
