@@ -4,8 +4,7 @@ import ohos.agp.components.*;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
-
-import java.util.List;
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 
 public class EmojiIconProvider extends BaseItemProvider {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
@@ -43,15 +42,15 @@ public class EmojiIconProvider extends BaseItemProvider {
 
     @Override
     public Component getComponent(int i, Component component, ComponentContainer componentContainer) {
-        HiLog.warn(LABEL_LOG, "EmojiIconProvider: getComponent: " + i);
+//        HiLog.warn(LABEL_LOG, "EmojiIconProvider: getComponent: " + i);
         final Component cpt;
         if (component == null) {
             DirectionalLayout directionalLayout = new DirectionalLayout(slice);
             Component newCpt = LayoutScatter.getInstance(slice).parse(ResourceTable.Layout_emojicon_item, null, false);
-            Image image = (Image) newCpt.findComponentById(ResourceTable.Id_emoji_icon);
+            EmojiconTextView image = (EmojiconTextView) newCpt.findComponentById(ResourceTable.Id_emoji_icon);
             Emojicon emojicon = list[i];
 
-            image.setImageAndDecodeBounds(emojicon.getIconComponent());
+            image.setText(emojicon.getEmoji());
 
             directionalLayout.addComponent(newCpt);
             cpt = directionalLayout;

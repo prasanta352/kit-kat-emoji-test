@@ -1,20 +1,17 @@
 package com.sithagi.kitkatemoji;
 
+import com.sithagi.kitkatemoji.emoji.*;
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
-import ohos.agp.colors.RgbColor;
 import ohos.agp.components.*;
-import ohos.agp.components.element.ShapeElement;
-import ohos.agp.utils.Color;
-import ohos.agp.utils.LayoutAlignment;
 import ohos.agp.utils.Point;
 import ohos.agp.window.service.Display;
 import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,32 +36,6 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             default:
                 return ResourceTable.Media_ic_emoji_recent_light_normal;
         }
-    }
-
-    static Component build(Context context, int index) {
-        HiLog.warn(LABEL_LOG, "build: ");
-        ListContainer listContainer = (ListContainer) LayoutScatter.getInstance(context).parse(ResourceTable.Layout_emojicon_grid, null, false);
-        listContainer.setLayoutConfig(new ComponentContainer.LayoutConfig(
-                ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_PARENT
-        ));
-//        ArrayList<Emojicon> emojicons = new ArrayList<>();
-//        for (int i = 0; i < 50; i++) {
-//            emojicons.add(new Emojicon(getIcon(index)));
-//        }
-//        int Height = Utils.getScreenHeight(context);
-//        int Width = Utils.getScreenWidth(context);
-//        int cols = (int) Width / 50;
-//        HiLog.warn(LABEL_LOG, "Height: " + Height);
-//        HiLog.warn(LABEL_LOG, "Width: " + Width);
-//        HiLog.warn(LABEL_LOG, "cols: " + cols);
-//
-//        TableLayoutManager tableLayoutManager = new TableLayoutManager();
-//        tableLayoutManager.setColumnCount(cols);
-//        tableLayoutManager.setRowCount(emojicons.size()/cols);
-//        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(emojicons, context);
-//        listContainer.setLayoutManager(tableLayoutManager);
-//        listContainer.setItemProvider(emojiIconProvider);
-        return listContainer;
     }
 
     @Override
@@ -95,22 +66,16 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         for (int i = 0; i < mEmojiTabs.length; i++) {
             final int position = i;
             mEmojiTabs[i].setClickedListener(c -> pageSlider.setCurrentPage(position));
-            List<Emojicon> emojicons = new ArrayList<>();
-            for (int j = 0; j < 50; j++) {
-                emojicons.add(new Emojicon(getIcon(i)));
-            }
+//            List<Emojicon> emojicons = new ArrayList<>();
+//            for (int j = 0; j < 50; j++) {
+//                emojicons.add(Emojicon.fromCodePoint(0x1f604));
+//            }
             try {
-                if(emojicons == null){
-
-                    HiLog.warn(LABEL_LOG, "emojicons == null ?: " + i+emojicons);
-                }
-
-                HiLog.warn(LABEL_LOG, "cols: " + emojicons.size()+emojicons);
-                Emojicon[] emojicons1 = new Emojicon[emojicons.size()];
-                emojicons.toArray(emojicons1);
+//                Emojicon[] emojicons1 = new Emojicon[emojicons.size()];
+//                emojicons.toArray(emojicons1);
                 emojiGridFractions.add(
 
-                        EmojiconGridFraction.newInstance(getContext(),emojicons1)
+                        EmojiconGridFraction.newInstance(getContext(), People.DATA)
                 );
             }catch (Exception ex){
 
@@ -119,7 +84,15 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         }
 
 
-        EmojiPagerAdapter adapter = new EmojiPagerAdapter(emojiGridFractions);
+        EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
+
+                EmojiconGridFraction.newInstance(getContext(), new Emojicon[0]),
+                EmojiconGridFraction.newInstance(getContext(), People.DATA),
+                EmojiconGridFraction.newInstance(getContext(), Nature.DATA),
+                EmojiconGridFraction.newInstance(getContext(), Objects.DATA),
+                EmojiconGridFraction.newInstance(getContext(), Places.DATA),
+                EmojiconGridFraction.newInstance(getContext(), Symbols.DATA)
+        ));
 
         pageSlider.setProvider(adapter);
 

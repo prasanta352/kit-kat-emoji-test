@@ -1,14 +1,10 @@
 package com.sithagi.kitkatemoji;
 
-import ohos.aafwk.ability.fraction.Fraction;
-import ohos.aafwk.content.Intent;
 import ohos.agp.components.*;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
-import ohos.utils.PacMap;
-
-import java.util.ArrayList;
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 
 public class EmojiconGridFraction extends ComponentContainer {
 
@@ -50,9 +46,7 @@ public class EmojiconGridFraction extends ComponentContainer {
 
     private void init(){
         ListContainer listContainer = (ListContainer) LayoutScatter.getInstance(getContext().getApplicationContext()).parse(ResourceTable.Layout_emojicon_grid, null, false);
-        listContainer.setLayoutConfig(new ComponentContainer.LayoutConfig(
-                ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_PARENT
-        ));
+
         addComponent(listContainer);
     }
 
