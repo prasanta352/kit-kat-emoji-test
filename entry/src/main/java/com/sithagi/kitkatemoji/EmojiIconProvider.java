@@ -11,11 +11,14 @@ public class EmojiIconProvider extends BaseItemProvider {
 
     private Emojicon[] list;
     private Context slice;
+    private OnEmojiIconClickedListener onEmojiIconClickedListener;
 
-    public EmojiIconProvider(Emojicon[] list, Context ability) {
+    public EmojiIconProvider(Emojicon[] list, Context ability, OnEmojiIconClickedListener onEmojiIconClickedListener) {
         this.list = list;
         this.slice = ability;
+        this.onEmojiIconClickedListener = onEmojiIconClickedListener;
     }
+
 
     @Override
     public int getCount() {
@@ -46,6 +49,7 @@ public class EmojiIconProvider extends BaseItemProvider {
         final Component cpt;
         if (component == null) {
             DirectionalLayout directionalLayout = new DirectionalLayout(slice);
+
             Component newCpt = LayoutScatter.getInstance(slice).parse(ResourceTable.Layout_emojicon_item, null, false);
             EmojiconTextView image = (EmojiconTextView) newCpt.findComponentById(ResourceTable.Id_emoji_icon);
             Emojicon emojicon = list[i];
@@ -54,11 +58,16 @@ public class EmojiIconProvider extends BaseItemProvider {
 
             directionalLayout.addComponent(newCpt);
             cpt = directionalLayout;
+            directionalLayout.setClickedListener(c -> onEmojiIconClickedListener.onEmojiIconClicked(emojicon));
 
         } else {
             HiLog.warn(LABEL_LOG, "EmojiIconProvider: getComponent(reuse): " + i);
             cpt = component;
         }
         return cpt;
+    }
+
+    public interface OnEmojiIconClickedListener {
+        void onEmojiIconClicked(Emojicon emojicon);
     }
 }

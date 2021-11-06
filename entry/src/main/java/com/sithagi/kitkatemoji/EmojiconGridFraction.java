@@ -6,9 +6,28 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import com.sithagi.kitkatemoji.emoji.Emojicon;
 
-public class EmojiconGridFraction extends ComponentContainer {
+public class EmojiconGridFraction extends ComponentContainer implements EmojiIconProvider.OnEmojiIconClickedListener {
 
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
+    private Emojicon[] mData;
+    private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
+    public EmojiconGridFraction(Context context) {
+        super(context);
+        init();
+    }
+
+
+    public EmojiconGridFraction(Context context, AttrSet attrSet) {
+        super(context, attrSet);
+        init();
+    }
+
+    public EmojiconGridFraction(Context context, AttrSet attrSet, String styleName) {
+        super(context, attrSet, styleName);
+        init();
+
+    }
+
     static int getIcon(int i) {
         switch (i) {
             case 1:
@@ -26,31 +45,21 @@ public class EmojiconGridFraction extends ComponentContainer {
                 return ResourceTable.Media_ic_emoji_recent_light_normal;
         }
     }
-    private Emojicon[] mData;
 
-    public EmojiconGridFraction(Context context) {
-        super(context);
-        init();
+    protected static EmojiconGridFraction newInstance(Context context, Emojicon[] emojicons, EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
+        EmojiconGridFraction emojiGridFragment = new EmojiconGridFraction(context);
+        emojiGridFragment.setOnEmojiIconClickedListener(onEmojiIconClickedListener);
+        emojiGridFragment.loadData(emojicons);
+        return emojiGridFragment;
     }
 
-    public EmojiconGridFraction(Context context, AttrSet attrSet) {
-        super(context, attrSet);
-        init();
-    }
-
-    public EmojiconGridFraction(Context context, AttrSet attrSet, String styleName) {
-        super(context, attrSet, styleName);
-        init();
-
-    }
-
-    private void init(){
+    private void init() {
         ListContainer listContainer = (ListContainer) LayoutScatter.getInstance(getContext().getApplicationContext()).parse(ResourceTable.Layout_emojicon_grid, null, false);
 
         addComponent(listContainer);
     }
 
-    public void loadData(Emojicon[] mData){
+    public void loadData(Emojicon[] mData) {
 
         HiLog.warn(LABEL_LOG, "build: ");
         ListContainer listContainer = (ListContainer) findComponentById(ResourceTable.Id_Emoji_GridView);
@@ -64,16 +73,25 @@ public class EmojiconGridFraction extends ComponentContainer {
 
         TableLayoutManager tableLayoutManager = new TableLayoutManager();
         tableLayoutManager.setColumnCount(cols);
-        tableLayoutManager.setRowCount(mData.length/cols);
-        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(mData, getContext().getApplicationContext());
+        tableLayoutManager.setRowCount(mData.length / cols);
+        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(mData, getContext().getApplicationContext(),this);
         listContainer.setLayoutManager(tableLayoutManager);
         listContainer.setItemProvider(emojiIconProvider);
 
     }
-    protected static EmojiconGridFraction newInstance(Context context, Emojicon[] emojicons) {
-        EmojiconGridFraction emojiGridFragment = new EmojiconGridFraction(context);
-        emojiGridFragment.loadData(emojicons);
-        return emojiGridFragment;
+
+    public void setOnEmojiIconClickedListener(EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
+        this.onEmojiIconClickedListener = onEmojiIconClickedListener;
+    }
+
+    @Override
+    public void onEmojiIconClicked(Emojicon emojicon) {
+        if (onEmojiIconClickedListener instanceof EmojiIconProvider.OnEmojiIconClickedListener) {
+            onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
+        }else{
+            HiLog.warn(LABEL_LOG, "EmojiIconProvider: EmojiconGridFraction.onEmojiIconClickedListener!! "+onEmojiIconClickedListener );
+
+        }
     }
 
 

@@ -10,32 +10,30 @@ import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
+import ohos.multimodalinput.event.TouchEvent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener {
+public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener, EmojiIconProvider.OnEmojiIconClickedListener {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
-
+    private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
     private DirectionalLayout[] mEmojiTabs;
 
-    static int getIcon(int i) {
-        switch (i) {
-            case 1:
-                return ResourceTable.Media_ic_emoji_people_light_normal;
-            case 2:
-                return ResourceTable.Media_ic_emoji_nature_light_normal;
-            case 3:
-                return ResourceTable.Media_ic_emoji_objects_light_normal;
-            case 4:
-                return ResourceTable.Media_ic_emoji_places_light_normal;
-            case 5:
-                return ResourceTable.Media_ic_emoji_symbols_light_normal;
-            case 0:
-            default:
-                return ResourceTable.Media_ic_emoji_recent_light_normal;
-        }
+
+    public void input(TextField textField, Emojicon emojicon) {
+        if (emojicon == null || textField == null) return;
+        textField.append(emojicon.getEmoji());
+    }
+
+    public void backspace(TextField textField) {
+        // TODO: find a better solution for this
+        if (textField == null) return;
+        String txt = textField.getText();
+        String finalString = txt.substring(0,txt.length()-1);
+        textField.setText(finalString);
     }
 
     @Override
@@ -45,13 +43,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         directionalLayout.setLayoutConfig(new ComponentContainer.LayoutConfig(
                 ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT)
         );
-
-
         Component rootComponent = scatter.parse(ResourceTable.Layout_emojiicons, directionalLayout, false);
         PageSlider pageSlider = (PageSlider) rootComponent.findComponentById(ResourceTable.Id_emoji_pager);
         pageSlider.addPageChangedListener(this);
-
-        List< EmojiconGridFraction> emojiGridFractions = new ArrayList<>();
 
 
         mEmojiTabs = new DirectionalLayout[6];
@@ -66,32 +60,25 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         for (int i = 0; i < mEmojiTabs.length; i++) {
             final int position = i;
             mEmojiTabs[i].setClickedListener(c -> pageSlider.setCurrentPage(position));
-//            List<Emojicon> emojicons = new ArrayList<>();
-//            for (int j = 0; j < 50; j++) {
-//                emojicons.add(Emojicon.fromCodePoint(0x1f604));
-//            }
-            try {
-//                Emojicon[] emojicons1 = new Emojicon[emojicons.size()];
-//                emojicons.toArray(emojicons1);
-                emojiGridFractions.add(
 
-                        EmojiconGridFraction.newInstance(getContext(), People.DATA)
-                );
-            }catch (Exception ex){
-
-                HiLog.warn(LABEL_LOG, "Exception: " + ex);
-            }
         }
+        rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener((component, touchEvent) -> {
 
+            if(onEmojiIconBackspaceClickedListener !=null){
+                 onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
+            }else{
+                HiLog.warn(LABEL_LOG, "EmojiIconFraction: onEmojiIconBackspaceClickedListener ==null " + onEmojiIconBackspaceClickedListener);
+            }
+            return true;
+        });
 
         EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
-
-                EmojiconGridFraction.newInstance(getContext(), new Emojicon[0]),
-                EmojiconGridFraction.newInstance(getContext(), People.DATA),
-                EmojiconGridFraction.newInstance(getContext(), Nature.DATA),
-                EmojiconGridFraction.newInstance(getContext(), Objects.DATA),
-                EmojiconGridFraction.newInstance(getContext(), Places.DATA),
-                EmojiconGridFraction.newInstance(getContext(), Symbols.DATA)
+                EmojiconGridFraction.newInstance(getContext(), new Emojicon[0], this),
+                EmojiconGridFraction.newInstance(getContext(), People.DATA, this),
+                EmojiconGridFraction.newInstance(getContext(), Nature.DATA, this),
+                EmojiconGridFraction.newInstance(getContext(), Objects.DATA, this),
+                EmojiconGridFraction.newInstance(getContext(), Places.DATA, this),
+                EmojiconGridFraction.newInstance(getContext(), Symbols.DATA, this)
         ));
 
         pageSlider.setProvider(adapter);
@@ -114,6 +101,19 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
     @Override
     public void onPageChosen(int i) {
 
+    }
+
+    public void setOnEmojiIconClickedListener(EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
+        this.onEmojiIconClickedListener = onEmojiIconClickedListener;
+    }
+
+    @Override
+    public void onEmojiIconClicked(Emojicon emojicon) {
+        if (onEmojiIconClickedListener instanceof EmojiIconProvider.OnEmojiIconClickedListener) {
+            onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
+        } else {
+            HiLog.warn(LABEL_LOG, "EmojiIconProvider: EmojiconsFraction.onEmojiIconClickedListener!! " + onEmojiIconClickedListener);
+        }
     }
 
     static class Utils {
@@ -149,9 +149,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     private static class EmojiPagerAdapter extends PageSliderProvider {
         //        private final Context context;
-        private final List< EmojiconGridFraction> fractions;
+        private final List<EmojiconGridFraction> fractions;
 
-        public EmojiPagerAdapter(List< EmojiconGridFraction> fractions) {
+        public EmojiPagerAdapter(List<EmojiconGridFraction> fractions) {
             this.fractions = fractions;
         }
 
@@ -185,6 +185,15 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             HiLog.warn(LABEL_LOG, "isPageMatchToObject: ");
             return false;
         }
+    }
+    private  OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener;
+
+    public void setOnEmojiIconBackspaceClickedListener(OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener) {
+        this.onEmojiIconBackspaceClickedListener = onEmojiIconBackspaceClickedListener;
+    }
+
+    public interface OnEmojiIconBackspaceClickedListener {
+        void onEmojiIconBackspaceClicked(Component c);
     }
 
 }
