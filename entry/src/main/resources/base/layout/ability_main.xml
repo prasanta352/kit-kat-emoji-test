@@ -12,7 +12,7 @@
         ohos:weight="1">
 
         <com.sithagi.kitkatemoji.EmojiconTextView
-            ohos:id="$+id:txt_sendMessage"
+            ohos:id="$+id:txt_sentMessage"
             ohos:height="match_content"
             ohos:width="match_parent"
             ohos:background_element="#fff"
@@ -30,9 +30,11 @@
 
     <DirectionalLayout
         ohos:id="$+id:main_fraction"
-        ohos:height="match_content"
+        ohos:height="250vp"
         ohos:width="match_parent"
+        ohos:visibility="hide"
         ohos:background_element="#FFFFEEAD"
+
 
         />
 

@@ -1,41 +1,133 @@
 package com.sithagi.kitkatemoji;
 
-import com.sithagi.kitkatemoji.slice.MainAbilitySlice;
-import ohos.aafwk.ability.Ability;
 import ohos.aafwk.ability.fraction.FractionAbility;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.Button;
+import ohos.agp.components.Component;
+import ohos.agp.components.DirectionalLayout;
 import ohos.agp.components.Image;
 import ohos.agp.components.TextField;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 
+
 public class MainAbility extends FractionAbility {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
+    TextField messageEd;
+    DirectionalLayout emojiIconsCover;
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
-//        super.setMainRoute(MainAbilitySlice.class.getName());
+        try {
+            super.setUIContent(ResourceTable.Layout_ability_main);
+            EmojiconsFraction emojiconsFraction = new EmojiconsFraction();
+            messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
 
-        super.setUIContent(ResourceTable.Layout_ability_main);
-        EmojiconsFraction emojiconsFraction = new EmojiconsFraction();
-        TextField messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
-        Image back = (Image) findComponentById(ResourceTable.Id_btn_send);
+            messageEd.setClickedListener(component -> {
+                if (isEmojiVisible) {
+                    component.clearFocus();
+                } else {
+                    component.requestFocus();
+                }
+            });
 
-        emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> {
-            HiLog.warn(LABEL_LOG, "emojicon: " + emojicon);
-            emojiconsFraction.input(messageEd,emojicon);
-        });
+            emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
+            EmojiconTextView msgTxt = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
+            Image btn_chat_emoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
+            Image send = (Image) findComponentById(ResourceTable.Id_btn_send);
+            send.setClickedListener(c -> {
+                String chat = messageEd.getText().trim();
+                if (!chat.isEmpty()) {
+                    msgTxt.setText(chat);
+                    messageEd.setText("");
 
-        emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c->{
-            emojiconsFraction.backspace(messageEd);
-        });
+                }
+                if (isEmojiVisible) {
+                    changeEmojiLayout();
+                }
 
-        HiLog.warn(LABEL_LOG, "onStart: ");
-        HiLog.warn(LABEL_LOG, "setClickedListener: ");
-        getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction).submit();
+            });
 
+            btn_chat_emoji.setClickedListener(c -> {
 
+                changeEmojiLayout();
+
+            });
+            emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> {
+                HiLog.warn(LABEL_LOG, "emojicon: " + emojicon);
+                emojiconsFraction.input(messageEd, emojicon);
+            });
+
+            emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> {
+                emojiconsFraction.backspace(messageEd);
+            });
+
+            HiLog.warn(LABEL_LOG, "onStart: ");
+            HiLog.warn(LABEL_LOG, "setClickedListener: ");
+
+            getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction).submit();
+        } catch (Exception ex) {
+            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
+            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
+                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
+            }
+        }
     }
+
+    boolean isEmojiVisible = false;
+
+    protected void changeEmojiLayout() {
+
+
+//		keyboard.showSoftInput(message, 0);
+        if (isEmojiVisible
+            //&& !isKeyBoardVisible
+        ) {
+//            emoticonsButton
+//                    .setBackgroundResource(R.drawable.ic_vp_smileys);
+//            emojiIconsCover
+//                    .setVisibility(LinearLayout.GONE);
+            emojiIconsCover
+                    .setVisibility(Component.HIDE);
+            isEmojiVisible = false;
+//            mShowEmojiHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+            messageEd.requestFocus();
+//                    keyboard.showSoftInput(messageEd, 0);
+//                    checkKeyboardHeight(parentLayout);
+//                }
+//            }, 100);
+
+        }
+//        else if (isEmojiVisible && isKeyBoardVisible) {
+//
+//        }
+        else if (!isEmojiVisible
+//                && isKeyBoardVisible
+        ) {
+//            hideKeyboard();
+//            mShowEmojiHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    emoticonsButton
+//                            .setBackgroundResource(R.drawable.ic_vp_keypad);
+//
+            emojiIconsCover
+                    .setVisibility(Component.VISIBLE);
+            isEmojiVisible = true;
+//                }
+//            }, 100);
+        }
+//        else if (!isEmojiVisible && !isKeyBoardVisible) {
+//            emoticonsButton
+//                    .setBackgroundResource(R.drawable.ic_vp_keypad);
+//
+//            emojiIconsCover
+//                    .setVisibility(LinearLayout.VISIBLE);
+//            isEmojiVisible = true;
+//        }
+    }
+
+
 }

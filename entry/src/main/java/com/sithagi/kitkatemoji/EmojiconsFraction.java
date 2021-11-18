@@ -10,14 +10,12 @@ import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
-import ohos.multimodalinput.event.TouchEvent;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener, EmojiIconProvider.OnEmojiIconClickedListener {
+public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener,
+        EmojiIconProvider.OnEmojiIconClickedListener {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
     private DirectionalLayout[] mEmojiTabs;
@@ -32,7 +30,7 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         // TODO: find a better solution for this
         if (textField == null) return;
         String txt = textField.getText();
-        String finalString = txt.substring(0,txt.length()-1);
+        String finalString = txt.substring(0, txt.length() - 1);
         textField.setText(finalString);
     }
 
@@ -63,10 +61,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
         }
         rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener((component, touchEvent) -> {
-
-            if(onEmojiIconBackspaceClickedListener !=null){
-                 onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
-            }else{
+            if (onEmojiIconBackspaceClickedListener != null) {
+                onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
+            } else {
                 HiLog.warn(LABEL_LOG, "EmojiIconFraction: onEmojiIconBackspaceClickedListener ==null " + onEmojiIconBackspaceClickedListener);
             }
             return true;
@@ -186,7 +183,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             return false;
         }
     }
-    private  OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener;
+
+    private OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener;
 
     public void setOnEmojiIconBackspaceClickedListener(OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener) {
         this.onEmojiIconBackspaceClickedListener = onEmojiIconBackspaceClickedListener;
