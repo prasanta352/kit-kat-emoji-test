@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DirectionalLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    xmlns:custom="http://schemas.huawei.com/res/custom"
     ohos:height="match_parent"
     ohos:width="match_parent"
     ohos:orientation="vertical">
@@ -17,14 +18,14 @@
             ohos:alignment="center"
             ohos:background_element="$color:black"
             ohos:weight="1"
-            ohos:id="$+id:emojis_tab_00_recent"
             >
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_recent_light_normal"/>
+                ohos:id="$+id:emojis_tab_00_recent"
+                ohos:background_element="$graphic:ic_emoji_recent"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -33,14 +34,14 @@
             ohos:alignment="center"
             ohos:background_element="$color:black"
             ohos:weight="1"
-            ohos:id="$+id:emojis_tab_0_people"
             >
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_people_light_normal"/>
+                ohos:background_element="$graphic:ic_emoji_people"
+                ohos:id="$+id:emojis_tab_0_people"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -48,14 +49,14 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
-            ohos:id="$+id:emojis_tab_1_nature"
             ohos:weight="1">
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_nature_light_normal"/>
+                ohos:background_element="$graphic:ic_emoji_nature"
+                ohos:id="$+id:emojis_tab_1_nature"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -63,14 +64,14 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
-            ohos:id="$+id:emojis_tab_2_objects"
             ohos:weight="1">
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_objects_light_normal"/>
+                ohos:background_element="$graphic:ic_emoji_objects"
+                ohos:id="$+id:emojis_tab_2_objects"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -78,14 +79,14 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
-            ohos:id="$+id:emojis_tab_3_cars"
             ohos:weight="1">
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_places_light_normal"/>
+                ohos:background_element="$graphic:ic_emoji_places"
+                ohos:id="$+id:emojis_tab_3_cars"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -93,14 +94,14 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:black"
-            ohos:id="$+id:emojis_tab_4_punctuation"
             ohos:weight="1">
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_emoji_symbols_light_normal"/>
+                ohos:background_element="$graphic:ic_emoji_symbols"
+                ohos:id="$+id:emojis_tab_4_punctuation"
+                />
         </DirectionalLayout>
 
         <DirectionalLayout
@@ -108,14 +109,14 @@
             ohos:width="0vp"
             ohos:alignment="center"
             ohos:background_element="$color:white"
-            ohos:id="$+id:emojis_backspace"
             ohos:weight="1">
 
-            <Image
-
+            <Button
                 ohos:height="32vp"
                 ohos:width="32vp"
-                ohos:background_element="$media:ic_vp_delete_s"/>
+                ohos:background_element="$media:ic_vp_delete_s"
+                ohos:id="$+id:emojis_backspace"
+                />
         </DirectionalLayout>
     </DirectionalLayout>
 

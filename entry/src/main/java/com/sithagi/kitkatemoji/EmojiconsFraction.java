@@ -10,6 +10,7 @@ import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         EmojiIconProvider.OnEmojiIconClickedListener {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
-    private DirectionalLayout[] mEmojiTabs;
+    private Button[] mEmojiTabs;
 
 
     public void input(TextField textField, Emojicon emojicon) {
@@ -37,23 +38,35 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
     @Override
     protected Component onComponentAttached(LayoutScatter scatter, ComponentContainer container, Intent intent) {
         // set layout parameters
-        DirectionalLayout directionalLayout = new DirectionalLayout(getApplicationContext());
+
+
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 0");
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached this " + this);
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getContext " + getContext());
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getApplicationContext " + getApplicationContext());
+        DirectionalLayout directionalLayout = new DirectionalLayout(this);
         directionalLayout.setLayoutConfig(new ComponentContainer.LayoutConfig(
                 ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT)
         );
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getApplicationContext() " + getContext());
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached scatter " + scatter);
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached directionalLayout " + directionalLayout);
+
         Component rootComponent = scatter.parse(ResourceTable.Layout_emojiicons, directionalLayout, false);
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 2");
         PageSlider pageSlider = (PageSlider) rootComponent.findComponentById(ResourceTable.Id_emoji_pager);
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 3");
         pageSlider.addPageChangedListener(this);
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 4 " + rootComponent);
+        mEmojiTabs = new Button[6];
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 5 " + mEmojiTabs);
 
-
-        mEmojiTabs = new DirectionalLayout[6];
-
-        mEmojiTabs[0] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_00_recent);
-        mEmojiTabs[1] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_0_people);
-        mEmojiTabs[2] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_1_nature);
-        mEmojiTabs[3] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_2_objects);
-        mEmojiTabs[4] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_3_cars);
-        mEmojiTabs[5] = (DirectionalLayout) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_4_punctuation);
+        mEmojiTabs[0] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_00_recent);
+        mEmojiTabs[1] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_0_people);
+        mEmojiTabs[2] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_1_nature);
+        mEmojiTabs[3] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_2_objects);
+        mEmojiTabs[4] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_3_cars);
+        mEmojiTabs[5] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_4_punctuation);
 
         for (int i = 0; i < mEmojiTabs.length; i++) {
             final int position = i;
@@ -69,6 +82,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             return true;
         });
 
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached: this " + getApplicationContext());
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached: getContext() " + getApplicationContext());
+
         EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
                 EmojiconGridFraction.newInstance(getContext(), new Emojicon[0], this),
                 EmojiconGridFraction.newInstance(getContext(), People.DATA, this),
@@ -82,6 +98,14 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
         directionalLayout.addComponent(rootComponent);
         return directionalLayout;
+//        try {
+//        } catch (Exception ex) {
+//            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
+//            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
+//                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
+//            }
+//        }
+//        return null;
     }
 
     //#region Event handler
@@ -92,12 +116,15 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     @Override
     public void onPageSlideStateChanged(int i) {
-
     }
 
     @Override
     public void onPageChosen(int i) {
-
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onPageChosen "+i);
+        for (Button btn: mEmojiTabs){
+            btn.setSelected(false);
+        }
+        mEmojiTabs[i].setSelected(true);
     }
 
     public void setOnEmojiIconClickedListener(EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
@@ -163,10 +190,11 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             try {
 
                 EmojiconGridFraction component = fractions.get(i);
-
+                componentContainer.removeAllComponents();
                 componentContainer.addComponent(component);
             } catch (Exception ex) {
                 HiLog.warn(LABEL_LOG, "Exception: " + ex);
+
             }
             return componentContainer;
         }

@@ -52,9 +52,11 @@ public class EmojiIconProvider extends BaseItemProvider {
 
             Component newCpt = LayoutScatter.getInstance(slice).parse(ResourceTable.Layout_emojicon_item, null, false);
             EmojiconTextView image = (EmojiconTextView) newCpt.findComponentById(ResourceTable.Id_emoji_icon);
+//            Text imageTxt = (Text) newCpt.findComponentById(ResourceTable.Id_emoji_icon_txt);
             Emojicon emojicon = list[i];
 
             image.setText(emojicon.getEmoji());
+//            imageTxt.setText(" ("+emojicon.getCode()+") ");
 
             directionalLayout.addComponent(newCpt);
             cpt = directionalLayout;

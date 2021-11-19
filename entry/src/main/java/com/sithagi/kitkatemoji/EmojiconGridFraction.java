@@ -11,20 +11,21 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
     private Emojicon[] mData;
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
+    Context context;
+
     public EmojiconGridFraction(Context context) {
         super(context);
-        init();
+        init(context);
     }
-
 
     public EmojiconGridFraction(Context context, AttrSet attrSet) {
         super(context, attrSet);
-        init();
+        init(context);
     }
 
     public EmojiconGridFraction(Context context, AttrSet attrSet, String styleName) {
         super(context, attrSet, styleName);
-        init();
+        init(context);
 
     }
 
@@ -47,14 +48,17 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
     }
 
     protected static EmojiconGridFraction newInstance(Context context, Emojicon[] emojicons, EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
+        HiLog.warn(LABEL_LOG, "EmojiconGridFraction: newInstance");
         EmojiconGridFraction emojiGridFragment = new EmojiconGridFraction(context);
         emojiGridFragment.setOnEmojiIconClickedListener(onEmojiIconClickedListener);
         emojiGridFragment.loadData(emojicons);
         return emojiGridFragment;
     }
 
-    private void init() {
-        ListContainer listContainer = (ListContainer) LayoutScatter.getInstance(getContext().getApplicationContext()).parse(ResourceTable.Layout_emojicon_grid, null, false);
+    private void init(Context context) {
+        this.context = context;
+        HiLog.warn(LABEL_LOG, "EmojiconGridFraction: init " + context);
+        ListContainer listContainer = (ListContainer) LayoutScatter.getInstance(context).parse(ResourceTable.Layout_emojicon_grid, null, false);
 
         addComponent(listContainer);
     }
@@ -64,9 +68,9 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
         HiLog.warn(LABEL_LOG, "build: ");
         ListContainer listContainer = (ListContainer) findComponentById(ResourceTable.Id_Emoji_GridView);
 
-        int Height = EmojiconsFraction.Utils.getScreenHeight(getContext().getApplicationContext());
-        int Width = EmojiconsFraction.Utils.getScreenWidth(getContext().getApplicationContext());
-        int cols = (int) Width / 50;
+        int Height = EmojiconsFraction.Utils.getScreenHeight(context);
+        int Width = EmojiconsFraction.Utils.getScreenWidth(context);
+        int cols = Width / AttrHelper.fp2px(34f,context);
         HiLog.warn(LABEL_LOG, "Height: " + Height);
         HiLog.warn(LABEL_LOG, "Width: " + Width);
         HiLog.warn(LABEL_LOG, "cols: " + cols);
@@ -74,7 +78,7 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
         TableLayoutManager tableLayoutManager = new TableLayoutManager();
         tableLayoutManager.setColumnCount(cols);
         tableLayoutManager.setRowCount(mData.length / cols);
-        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(mData, getContext().getApplicationContext(),this);
+        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(mData, context, this);
         listContainer.setLayoutManager(tableLayoutManager);
         listContainer.setItemProvider(emojiIconProvider);
 
@@ -88,8 +92,8 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
     public void onEmojiIconClicked(Emojicon emojicon) {
         if (onEmojiIconClickedListener instanceof EmojiIconProvider.OnEmojiIconClickedListener) {
             onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
-        }else{
-            HiLog.warn(LABEL_LOG, "EmojiIconProvider: EmojiconGridFraction.onEmojiIconClickedListener!! "+onEmojiIconClickedListener );
+        } else {
+            HiLog.warn(LABEL_LOG, "EmojiIconProvider: EmojiconGridFraction.onEmojiIconClickedListener!! " + onEmojiIconClickedListener);
 
         }
     }

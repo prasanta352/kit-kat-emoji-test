@@ -9,7 +9,9 @@ public class Emojicon implements Serializable {
     private static final long serialVersionUID = 1L;
     private int icon;
     private char value;
-    private String emoji;
+    private String values="";
+    private String emoji="";
+    public int code=-1;
 
     private Emojicon() {
     }
@@ -28,18 +30,21 @@ public class Emojicon implements Serializable {
     public static Emojicon fromCodePoint(int codePoint) {
         Emojicon emoji = new Emojicon();
         emoji.emoji = newString(codePoint);
+        emoji.code = codePoint;
         return emoji;
     }
 
     public static Emojicon fromChar(char ch) {
         Emojicon emoji = new Emojicon();
         emoji.emoji = Character.toString(ch);
+        emoji.value = ch;
         return emoji;
     }
 
     public static Emojicon fromChars(String chars) {
         Emojicon emoji = new Emojicon();
         emoji.emoji = chars;
+        emoji.values = chars;
         return emoji;
     }
 
@@ -61,5 +66,13 @@ public class Emojicon implements Serializable {
 
     public String getEmoji() {
         return emoji;
+    }
+
+    public String getCode(){
+        if(this.code!=-1) return String.valueOf(this.code);
+        if(!String.valueOf(this.value).isEmpty()) return ""+(Integer.valueOf(this.value));
+        if(!String.valueOf(this.values).isEmpty()) return ""+Integer.valueOf(this.values);
+        return "NAN";
+
     }
 }

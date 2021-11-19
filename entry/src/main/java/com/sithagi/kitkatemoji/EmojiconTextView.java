@@ -28,8 +28,6 @@ public class EmojiconTextView extends Text {
     }
 
     private void init(AttrSet attrSet) {
-
-
         mEmojiconSize = (int) getTextSize();
         if (attrSet != null) {
             attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE).ifPresent(attr -> {
@@ -37,10 +35,7 @@ public class EmojiconTextView extends Text {
 
             });
         }
-
         setTextSize(mEmojiconSize);
-
-
     }
 
     /**
