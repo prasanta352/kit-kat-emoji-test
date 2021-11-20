@@ -13,6 +13,7 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
     Context context;
 
+    //#region initializer
     public EmojiconGridFraction(Context context) {
         super(context);
         init(context);
@@ -28,29 +29,13 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
         init(context);
 
     }
-
-    static int getIcon(int i) {
-        switch (i) {
-            case 1:
-                return ResourceTable.Media_ic_emoji_people_light_normal;
-            case 2:
-                return ResourceTable.Media_ic_emoji_nature_light_normal;
-            case 3:
-                return ResourceTable.Media_ic_emoji_objects_light_normal;
-            case 4:
-                return ResourceTable.Media_ic_emoji_places_light_normal;
-            case 5:
-                return ResourceTable.Media_ic_emoji_symbols_light_normal;
-            case 0:
-            default:
-                return ResourceTable.Media_ic_emoji_recent_light_normal;
-        }
-    }
+    //#endregion initializer
 
     protected static EmojiconGridFraction newInstance(Context context, Emojicon[] emojicons, EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
         HiLog.warn(LABEL_LOG, "EmojiconGridFraction: newInstance");
         EmojiconGridFraction emojiGridFragment = new EmojiconGridFraction(context);
         emojiGridFragment.setOnEmojiIconClickedListener(onEmojiIconClickedListener);
+
         emojiGridFragment.loadData(emojicons);
         return emojiGridFragment;
     }
@@ -99,32 +84,4 @@ public class EmojiconGridFraction extends ComponentContainer implements EmojiIco
     }
 
 
-//    @Override
-//    protected Component onComponentAttached(LayoutScatter scatter, ComponentContainer container, Intent intent) {
-//        HiLog.warn(LABEL_LOG, "build: ");
-//        ListContainer listContainer = (ListContainer) scatter.parse(ResourceTable.Layout_emojicon_grid, null, false);
-//        listContainer.setLayoutConfig(new ComponentContainer.LayoutConfig(
-//                ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_PARENT
-//        ));
-//        ArrayList<Emojicon> emojicons = new ArrayList<>();
-//        for (int i = 0; i < 50; i++) {
-//            emojicons.add(new Emojicon(getIcon(i)));
-//        }
-//        int Height = EmojiconsFraction.Utils.getScreenHeight(getApplicationContext());
-//        int Width = EmojiconsFraction.Utils.getScreenWidth(getApplicationContext());
-//        int cols = (int) Width / 50;
-//        HiLog.warn(LABEL_LOG, "Height: " + Height);
-//        HiLog.warn(LABEL_LOG, "Width: " + Width);
-//        HiLog.warn(LABEL_LOG, "cols: " + cols);
-//
-//        TableLayoutManager tableLayoutManager = new TableLayoutManager();
-//        tableLayoutManager.setColumnCount(cols);
-//        tableLayoutManager.setRowCount(emojicons.size()/cols);
-//        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(emojicons, getApplicationContext());
-//        listContainer.setLayoutManager(tableLayoutManager);
-//        listContainer.setItemProvider(emojiIconProvider);
-//
-//        container.addComponent(listContainer);
-//        return listContainer;
-//    }
 }

@@ -2,10 +2,9 @@ package com.sithagi.kitkatemoji;
 
 import ohos.aafwk.ability.fraction.FractionAbility;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.Component;
-import ohos.agp.components.DirectionalLayout;
-import ohos.agp.components.Image;
-import ohos.agp.components.TextField;
+import ohos.agp.components.*;
+import ohos.agp.components.element.ShapeElement;
+import ohos.agp.utils.Rect;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 
@@ -14,13 +13,14 @@ public class MainAbility extends FractionAbility {
     private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
     TextField messageEd;
     DirectionalLayout emojiIconsCover;
+    Image btn_chat_emoji;
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
         try {
             super.setUIContent(ResourceTable.Layout_ability_main);
-            EmojiconsFraction emojiconsFraction = new EmojiconsFraction();
+            EmojiconsFraction emojiconsFraction = new EmojiconsFraction(getContext());
             messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
 
             messageEd.setClickedListener(component -> {
@@ -33,7 +33,7 @@ public class MainAbility extends FractionAbility {
 
             emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
             EmojiconTextView msgTxt = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
-            Image btn_chat_emoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
+            btn_chat_emoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
             Image send = (Image) findComponentById(ResourceTable.Id_btn_send);
             send.setClickedListener(c -> {
                 String chat = messageEd.getText().trim();
@@ -64,8 +64,10 @@ public class MainAbility extends FractionAbility {
 
             HiLog.warn(LABEL_LOG, "onStart: ");
             HiLog.warn(LABEL_LOG, "setClickedListener: ");
-
             getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction).submit();
+
+            DirectionalLayout directionalLayout = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fractions);
+            checkKeyboardHeight(directionalLayout);
         } catch (Exception ex) {
             HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
             for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
@@ -83,10 +85,12 @@ public class MainAbility extends FractionAbility {
         if (isEmojiVisible
             //&& !isKeyBoardVisible
         ) {
-//            emoticonsButton
-//                    .setBackgroundResource(R.drawable.ic_vp_smileys);
-//            emojiIconsCover
-//                    .setVisibility(LinearLayout.GONE);
+            ShapeElement shapeElement = new ShapeElement();
+
+            btn_chat_emoji
+                    .setImageAndDecodeBounds(ResourceTable.Media_ic_vp_smileys);
+            emojiIconsCover
+                    .setVisibility(Component.HIDE);
             emojiIconsCover
                     .setVisibility(Component.HIDE);
             isEmojiVisible = false;
@@ -110,8 +114,8 @@ public class MainAbility extends FractionAbility {
 //            mShowEmojiHandler.postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
-//                    emoticonsButton
-//                            .setBackgroundResource(R.drawable.ic_vp_keypad);
+
+//            btn_chat_emoji.setImageAndDecodeBounds(ResourceTable.Media_ic_vp_keypad);
 //
             emojiIconsCover
                     .setVisibility(Component.VISIBLE);
@@ -129,5 +133,22 @@ public class MainAbility extends FractionAbility {
 //        }
     }
 
+
+    private void checkKeyboardHeight(final Component parentLayout) {
+        Rect r = new Rect();
+        parentLayout.getWindowVisibleRect(r);
+        HiLog.warn(LABEL_LOG, "MainAbility: checkKeyboardHeight "+r);
+        HiLog.warn(LABEL_LOG, "MainAbility: checkKeyboardHeight "+r);
+        HiLog.warn(LABEL_LOG, "MainAbility: checkKeyboardHeight "+r);
+        HiLog.warn(LABEL_LOG, "MainAbility: checkKeyboardHeight "+r);
+        parentLayout.setLayoutRefreshedListener(new Component.LayoutRefreshedListener() {
+            @Override
+            public void onRefreshed(Component component) {
+
+                HiLog.warn(LABEL_LOG, "MainAbility: onRefreshed");
+            }
+        });
+
+    }
 
 }

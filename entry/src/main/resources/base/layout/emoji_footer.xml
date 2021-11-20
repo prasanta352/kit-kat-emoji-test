@@ -13,8 +13,8 @@
 
         <Image
             ohos:id="$+id:btn_chat_emoji"
-            ohos:height="48vp"
-            ohos:width="48vp"
+            ohos:height="68vp"
+            ohos:width="68vp"
             ohos:background_element="$media:ic_vp_smileys"
             />
     </DirectionalLayout>

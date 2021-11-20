@@ -21,6 +21,11 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
     private Button[] mEmojiTabs;
 
+    Context context;
+    public EmojiconsFraction(Context context) {
+        super();
+        this.context=context;
+    }
 
     public void input(TextField textField, Emojicon emojicon) {
         if (emojicon == null || textField == null) return;
@@ -44,13 +49,12 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached this " + this);
         HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getContext " + getContext());
         HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getApplicationContext " + getApplicationContext());
+        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached context " + context);
         DirectionalLayout directionalLayout = new DirectionalLayout(this);
         directionalLayout.setLayoutConfig(new ComponentContainer.LayoutConfig(
                 ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT)
         );
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getApplicationContext() " + getContext());
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached scatter " + scatter);
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached directionalLayout " + directionalLayout);
+
 
         Component rootComponent = scatter.parse(ResourceTable.Layout_emojiicons, directionalLayout, false);
         HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 2");
@@ -86,12 +90,12 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached: getContext() " + getApplicationContext());
 
         EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
-                EmojiconGridFraction.newInstance(getContext(), new Emojicon[0], this),
-                EmojiconGridFraction.newInstance(getContext(), People.DATA, this),
-                EmojiconGridFraction.newInstance(getContext(), Nature.DATA, this),
-                EmojiconGridFraction.newInstance(getContext(), Objects.DATA, this),
-                EmojiconGridFraction.newInstance(getContext(), Places.DATA, this),
-                EmojiconGridFraction.newInstance(getContext(), Symbols.DATA, this)
+                EmojiconGridFraction.newInstance(context, new Emojicon[0], this),
+                EmojiconGridFraction.newInstance(context, People.DATA, this),
+                EmojiconGridFraction.newInstance(context, Nature.DATA, this),
+                EmojiconGridFraction.newInstance(context, Objects.DATA, this),
+                EmojiconGridFraction.newInstance(context, Places.DATA, this),
+                EmojiconGridFraction.newInstance(context, Symbols.DATA, this)
         ));
 
         pageSlider.setProvider(adapter);
