@@ -1,12 +1,19 @@
 package com.sithagi.kitkatemoji.emoji;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Symbols emoji icon sets.
  *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class Symbols {
-    public static final Emojicon[] DATA = new Emojicon[]{
+    private Symbols(){
+    }
+
+    protected static final List<Emojicon> DATA = Collections.unmodifiableList(Arrays.asList(
             Emojicon.fromChars("\u0031\u20e3"),
             Emojicon.fromChars("\u0032\u20e3"),
             Emojicon.fromChars("\u0033\u20e3"),
@@ -218,6 +225,10 @@ public class Symbols {
             Emojicon.fromCodePoint(0x1f536),
             Emojicon.fromCodePoint(0x1f537),
             Emojicon.fromCodePoint(0x1f538),
-            Emojicon.fromCodePoint(0x1f539),
-    };
+            Emojicon.fromCodePoint(0x1f539)
+    ));
+
+    public static Emojicon[] getData() {
+        return (Emojicon[]) DATA.toArray();
+    }
 }

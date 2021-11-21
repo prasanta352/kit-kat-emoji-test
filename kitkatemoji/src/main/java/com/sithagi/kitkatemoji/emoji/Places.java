@@ -1,12 +1,19 @@
 package com.sithagi.kitkatemoji.emoji;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Places emoji icon sets.
  *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class Places {
-    public static final Emojicon[] DATA = new Emojicon[]{
+    private Places() {
+    }
+
+    protected static final List<Emojicon> DATA = Collections.unmodifiableList(Arrays.asList(
             Emojicon.fromCodePoint(0x1f3e0),
             Emojicon.fromCodePoint(0x1f3e1),
             Emojicon.fromCodePoint(0x1f3eb),
@@ -107,6 +114,10 @@ public class Places {
             Emojicon.fromChars("\ud83c\uddea\ud83c\uddf8"),
             Emojicon.fromChars("\ud83c\uddee\ud83c\uddf9"),
             Emojicon.fromChars("\ud83c\uddf7\ud83c\uddfa"),
-            Emojicon.fromChars("\ud83c\uddec\ud83c\udde7"),
-    };
+            Emojicon.fromChars("\ud83c\uddec\ud83c\udde7")
+    ));
+
+    public static Emojicon[] getData() {
+        return (Emojicon[]) DATA.toArray();
+    }
 }

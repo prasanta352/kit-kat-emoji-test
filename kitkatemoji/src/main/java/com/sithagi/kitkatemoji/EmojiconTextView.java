@@ -48,7 +48,7 @@ public class EmojiconTextView extends Text {
     /**
      * custom attr constants.
      */
-    public static class EmojiconTextViewAttrsConstants {
+    private static class EmojiconTextViewAttrsConstants {
         //if set to true, arrow will be shown on right side of the text
         public static final String ATTR_EMOJI_ICON_SIZE = "emojiconSize";
     }

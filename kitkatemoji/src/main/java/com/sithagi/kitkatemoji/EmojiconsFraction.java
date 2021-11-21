@@ -82,11 +82,11 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         pageSlider.addPageChangedListener(this);
         EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
                 EmojiconGridFraction.newInstance(context, new Emojicon[0], this),
-                EmojiconGridFraction.newInstance(context, People.DATA, this),
-                EmojiconGridFraction.newInstance(context, Nature.DATA, this),
-                EmojiconGridFraction.newInstance(context, Objects.DATA, this),
-                EmojiconGridFraction.newInstance(context, Places.DATA, this),
-                EmojiconGridFraction.newInstance(context, Symbols.DATA, this)
+                EmojiconGridFraction.newInstance(context, People.getData(), this),
+                EmojiconGridFraction.newInstance(context, Nature.getData(), this),
+                EmojiconGridFraction.newInstance(context, Objects.getData(), this),
+                EmojiconGridFraction.newInstance(context, Places.getData(), this),
+                EmojiconGridFraction.newInstance(context, Symbols.getData(), this)
         ));
         pageSlider.setProvider(adapter);
 
@@ -108,8 +108,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
         rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener(
                 new RepeatListener(1000, 50, component -> {
-                    if (onEmojiIconBackspaceClickedListener != null) {
-                        onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
+                    if (this.onEmojiIconBackspaceClickedListener != null) {
+                        this.onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
                     }
                 })
         );
@@ -122,10 +122,12 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
     //#region Event handler
     @Override
     public void onPageSliding(int i, float v, int i1) {
+        // no implementation is needed
     }
 
     @Override
     public void onPageSlideStateChanged(int i) {
+        // no implementation is needed
     }
 
     @Override
@@ -157,8 +159,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     @Override
     public void onEmojiIconClicked(Emojicon emojicon) {
-        if (onEmojiIconClickedListener != null) {
-            onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
+        if (this.onEmojiIconClickedListener != null) {
+            this.onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
         }
     }
 
