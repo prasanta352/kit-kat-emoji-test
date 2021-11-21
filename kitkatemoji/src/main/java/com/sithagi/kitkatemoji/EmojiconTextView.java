@@ -1,11 +1,8 @@
 package com.sithagi.kitkatemoji;
 
-import ohos.agp.components.AttrHelper;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Text;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
 
 public class EmojiconTextView extends Text {
     private int mEmojiconSize;
@@ -30,9 +27,7 @@ public class EmojiconTextView extends Text {
     private void init(AttrSet attrSet) {
         mEmojiconSize = getTextSize();
         if (attrSet != null) {
-            attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE).ifPresent(attr -> {
-                mEmojiconSize = attr.getDimensionValue();
-            });
+            attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE).ifPresent(attr -> mEmojiconSize = attr.getDimensionValue());
         }
         setTextSize(mEmojiconSize);
     }

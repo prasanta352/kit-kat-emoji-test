@@ -13,8 +13,8 @@
 
         <Image
             ohos:id="$+id:btn_chat_emoji"
-            ohos:height="68vp"
-            ohos:width="68vp"
+            ohos:width="48vp"
+            ohos:height="48vp"
             ohos:scale_mode="zoom_center"
             ohos:background_element="$media:ic_vp_smileys"
             />
@@ -30,9 +30,9 @@
             ohos:id="$+id:edit_chat_message"
             ohos:height="match_parent"
             ohos:width="match_parent"
-            ohos:hint="Type Message Here"
+            ohos:hint="$string:mainability_chat_message_type_hint"
             ohos:max_height="48vp"
-            ohos:text="Ji"
+            ohos:text=""
             ohos:text_color="$color:black"
             ohos:text_size="24fp"
             ohos:text_alignment="vertical_center"

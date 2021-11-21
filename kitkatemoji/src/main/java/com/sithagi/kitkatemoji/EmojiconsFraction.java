@@ -4,21 +4,13 @@ import com.sithagi.kitkatemoji.emoji.*;
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.*;
-import ohos.agp.utils.Point;
-import ohos.agp.window.service.Display;
-import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
 import ohos.eventhandler.EventHandler;
 import ohos.eventhandler.EventRunner;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-import ohos.miscservices.timeutility.Time;
 import ohos.multimodalinput.event.TouchEvent;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Handler;
 
 public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener,
         EmojiIconProvider.OnEmojiIconClickedListener {

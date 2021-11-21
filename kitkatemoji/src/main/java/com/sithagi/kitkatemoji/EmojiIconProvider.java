@@ -1,10 +1,8 @@
 package com.sithagi.kitkatemoji;
 
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 import ohos.agp.components.*;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-import com.sithagi.kitkatemoji.emoji.Emojicon;
 
 public class EmojiIconProvider extends BaseItemProvider {
     private Emojicon[] list;
@@ -20,8 +18,7 @@ public class EmojiIconProvider extends BaseItemProvider {
 
     @Override
     public int getCount() {
-        int i = list == null ? 0 : list.length;
-        return i;
+        return list == null ? 0 : list.length;
     }
 
     @Override

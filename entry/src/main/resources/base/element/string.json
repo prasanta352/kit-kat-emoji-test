@@ -11,6 +11,10 @@
     {
       "name": "mainability_HelloWorld",
       "value": "Hello World"
+    },
+    {
+      "name": "mainability_chat_message_type_hint",
+      "value": "Type Message Here"
     }
   ]
 }

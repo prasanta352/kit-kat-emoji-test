@@ -2,9 +2,10 @@ package com.sithagi.kitkatemoji;
 
 import ohos.aafwk.ability.fraction.FractionAbility;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.*;
-import ohos.agp.components.element.ShapeElement;
-import ohos.agp.utils.Rect;
+import ohos.agp.components.Component;
+import ohos.agp.components.DirectionalLayout;
+import ohos.agp.components.Image;
+import ohos.agp.components.TextField;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 
@@ -21,7 +22,9 @@ public class MainAbility extends FractionAbility {
         super.onStart(intent);
         try {
             super.setUIContent(ResourceTable.Layout_ability_main);
+
             EmojiconsFraction emojiconsFraction = new EmojiconsFraction(getContext());
+
             messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
             EmojiconTextView messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
             emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
@@ -52,21 +55,17 @@ public class MainAbility extends FractionAbility {
 
             btn_chat_emoji.setClickedListener(c -> changeEmojiLayout());
 
-            emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> {
-                emojiconsFraction.input(messageEd, emojicon);
-            });
+            emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> emojiconsFraction.input(messageEd, emojicon));
 
-            emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> {
-                emojiconsFraction.backspace(messageEd);
-            });
+            emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> emojiconsFraction.backspace(messageEd));
 
             getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction).submit();
 
         } catch (Exception ex) {
-            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
-            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
-                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
-            }
+//            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
+//            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
+//                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
+//            }
         }
     }
 

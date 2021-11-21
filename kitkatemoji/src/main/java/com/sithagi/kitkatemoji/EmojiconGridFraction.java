@@ -1,5 +1,6 @@
 package com.sithagi.kitkatemoji;
 
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.*;
@@ -7,9 +8,6 @@ import ohos.agp.utils.Point;
 import ohos.agp.window.service.Display;
 import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-import com.sithagi.kitkatemoji.emoji.Emojicon;
 
 import java.util.Optional;
 
