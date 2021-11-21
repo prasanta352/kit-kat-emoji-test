@@ -9,7 +9,7 @@
     <com.sithagi.kitkatemoji.EmojiconTextView
         ohos:height="match_content"
         ohos:width="match_content"
-        ohos:padding="2vp"
+        ohos:padding="8vp"
         ohos:id="$+id:emoji_icon"
         ohos:layout_alignment="center"
         ohos:text_alignment="center"

@@ -7,10 +7,12 @@
     ohos:orientation="vertical">
 
     <DirectionalLayout
-        ohos:height="0"
-        ohos:width="match_parent"
         ohos:weight="1"
-        ohos:margin="12fp">
+        ohos:height="0"
+        ohos:padding="12fp"
+        ohos:alignment="center"
+        ohos:width="match_parent"
+        ohos:background_element="#000">
 
         <com.sithagi.kitkatemoji.EmojiconTextView
             ohos:id="$+id:txt_sentMessage"
@@ -18,6 +20,7 @@
             ohos:width="match_parent"
             ohos:background_element="#fff"
             ohos:text="Hello"
+            ohos:padding="12vp"
             custom:emojiconSize="24fp"
             />
     </DirectionalLayout>
