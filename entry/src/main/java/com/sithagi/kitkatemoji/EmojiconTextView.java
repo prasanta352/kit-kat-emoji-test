@@ -8,10 +8,9 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 
 public class EmojiconTextView extends Text {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
-    boolean disableLog = false;
     private int mEmojiconSize;
 
+    //#region constructor
     public EmojiconTextView(Context context) {
         super(context);
         init(null);
@@ -26,13 +25,13 @@ public class EmojiconTextView extends Text {
         super(context, attrSet, styleName);
         init(attrSet);
     }
+    //#endregion constructor
 
     private void init(AttrSet attrSet) {
-        mEmojiconSize = (int) getTextSize();
+        mEmojiconSize = getTextSize();
         if (attrSet != null) {
             attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE).ifPresent(attr -> {
                 mEmojiconSize = attr.getDimensionValue();
-
             });
         }
         setTextSize(mEmojiconSize);

@@ -8,62 +8,67 @@ import ohos.agp.utils.Point;
 import ohos.agp.window.service.Display;
 import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
+import ohos.eventhandler.EventHandler;
+import ohos.eventhandler.EventRunner;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
+import ohos.miscservices.timeutility.Time;
+import ohos.multimodalinput.event.TouchEvent;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Handler;
 
 public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener,
         EmojiIconProvider.OnEmojiIconClickedListener {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
-    private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
+    private final Context context;
     private Button[] mEmojiTabs;
+    private int mEmojiTabLastSelectedIndex = -1;
+    private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
+    private OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener;
 
-    Context context;
     public EmojiconsFraction(Context context) {
-        super();
-        this.context=context;
+        this.context = context;
     }
 
     public void input(TextField textField, Emojicon emojicon) {
         if (emojicon == null || textField == null) return;
+        // TODO: find a better solution for this
+        // because there is no api for putting character based on cursor position
+        // so for now we are appending new emoji to the end of the text
         textField.append(emojicon.getEmoji());
     }
 
     public void backspace(TextField textField) {
-        // TODO: find a better solution for this
+        // TODO: find a better solution for this maybe there is a api for it ??
+        // because there is no api for removing character based on cursor position
+        // so for now we are removing character from end of the text
         if (textField == null) return;
         String txt = textField.getText();
+        if (txt.isEmpty()) return;
         String finalString = txt.substring(0, txt.length() - 1);
         textField.setText(finalString);
     }
 
     @Override
     protected Component onComponentAttached(LayoutScatter scatter, ComponentContainer container, Intent intent) {
-        // set layout parameters
+        Component rootComponent = scatter.parse(ResourceTable.Layout_emojiicons, container, false);
 
-
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 0");
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached this " + this);
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getContext " + getContext());
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached getApplicationContext " + getApplicationContext());
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached context " + context);
-        DirectionalLayout directionalLayout = new DirectionalLayout(this);
-        directionalLayout.setLayoutConfig(new ComponentContainer.LayoutConfig(
-                ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT)
-        );
-
-
-        Component rootComponent = scatter.parse(ResourceTable.Layout_emojiicons, directionalLayout, false);
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 2");
         PageSlider pageSlider = (PageSlider) rootComponent.findComponentById(ResourceTable.Id_emoji_pager);
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 3");
         pageSlider.addPageChangedListener(this);
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 4 " + rootComponent);
+        EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
+                EmojiconGridFraction.newInstance(context, new Emojicon[0], this),
+                EmojiconGridFraction.newInstance(context, People.DATA, this),
+                EmojiconGridFraction.newInstance(context, Nature.DATA, this),
+                EmojiconGridFraction.newInstance(context, Objects.DATA, this),
+                EmojiconGridFraction.newInstance(context, Places.DATA, this),
+                EmojiconGridFraction.newInstance(context, Symbols.DATA, this)
+        ));
+        pageSlider.setProvider(adapter);
+
+
         mEmojiTabs = new Button[6];
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached 5 " + mEmojiTabs);
 
         mEmojiTabs[0] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_00_recent);
         mEmojiTabs[1] = (Button) rootComponent.findComponentById(ResourceTable.Id_emojis_tab_0_people);
@@ -77,45 +82,21 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
             mEmojiTabs[i].setClickedListener(c -> pageSlider.setCurrentPage(position));
 
         }
-        rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener((component, touchEvent) -> {
+
+        rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener(new RepeatListener(1000, 50, c -> {
             if (onEmojiIconBackspaceClickedListener != null) {
-                onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
-            } else {
-                HiLog.warn(LABEL_LOG, "EmojiIconFraction: onEmojiIconBackspaceClickedListener ==null " + onEmojiIconBackspaceClickedListener);
+                onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(c);
             }
-            return true;
-        });
+        }));
 
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached: this " + getApplicationContext());
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onComponentAttached: getContext() " + getApplicationContext());
-
-        EmojiPagerAdapter adapter = new EmojiPagerAdapter(Arrays.asList(
-                EmojiconGridFraction.newInstance(context, new Emojicon[0], this),
-                EmojiconGridFraction.newInstance(context, People.DATA, this),
-                EmojiconGridFraction.newInstance(context, Nature.DATA, this),
-                EmojiconGridFraction.newInstance(context, Objects.DATA, this),
-                EmojiconGridFraction.newInstance(context, Places.DATA, this),
-                EmojiconGridFraction.newInstance(context, Symbols.DATA, this)
-        ));
-
-        pageSlider.setProvider(adapter);
-
-        directionalLayout.addComponent(rootComponent);
-        return directionalLayout;
-//        try {
-//        } catch (Exception ex) {
-//            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
-//            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
-//                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
-//            }
-//        }
-//        return null;
+        onPageChosen(0);
+        return rootComponent;
     }
+
 
     //#region Event handler
     @Override
     public void onPageSliding(int i, float v, int i1) {
-
     }
 
     @Override
@@ -124,11 +105,23 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     @Override
     public void onPageChosen(int i) {
-        HiLog.warn(LABEL_LOG, "EmojiconsFraction: onPageChosen "+i);
-        for (Button btn: mEmojiTabs){
-            btn.setSelected(false);
+        if (mEmojiTabLastSelectedIndex == i) {
+            return;
         }
-        mEmojiTabs[i].setSelected(true);
+        switch (i) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                if (mEmojiTabLastSelectedIndex >= 0 && mEmojiTabLastSelectedIndex < mEmojiTabs.length) {
+                    mEmojiTabs[mEmojiTabLastSelectedIndex].setSelected(false);
+                }
+                mEmojiTabs[i].setSelected(true);
+                mEmojiTabLastSelectedIndex = i;
+                break;
+        }
     }
 
     public void setOnEmojiIconClickedListener(EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
@@ -137,86 +130,10 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
     @Override
     public void onEmojiIconClicked(Emojicon emojicon) {
-        if (onEmojiIconClickedListener instanceof EmojiIconProvider.OnEmojiIconClickedListener) {
+        if (onEmojiIconClickedListener != null) {
             onEmojiIconClickedListener.onEmojiIconClicked(emojicon);
-        } else {
-            HiLog.warn(LABEL_LOG, "EmojiIconProvider: EmojiconsFraction.onEmojiIconClickedListener!! " + onEmojiIconClickedListener);
         }
     }
-
-    static class Utils {
-
-        private Utils() {
-        }
-
-        public static int getScreenWidth(Context context) {
-            DisplayManager displayManager = DisplayManager.getInstance();
-            Optional<Display> optDisplay = displayManager.getDefaultDisplay(context);
-            Point point = new Point(0, 0);
-            if (optDisplay.isPresent()) {
-                Display display = optDisplay.get();
-                display.getSize(point);
-            }
-            return (int) point.position[0];
-        }
-
-        public static int getScreenHeight(Context context) {
-            DisplayManager displayManager = DisplayManager.getInstance();
-            Optional<Display> optDisplay = displayManager.getDefaultDisplay(context);
-            Point point = new Point(0, 0);
-            if (optDisplay.isPresent()) {
-                Display display = optDisplay.get();
-                display.getSize(point);
-            }
-            return (int) point.position[1];
-        }
-
-
-    }
-    //#endregion Event handler
-
-    private static class EmojiPagerAdapter extends PageSliderProvider {
-        //        private final Context context;
-        private final List<EmojiconGridFraction> fractions;
-
-        public EmojiPagerAdapter(List<EmojiconGridFraction> fractions) {
-            this.fractions = fractions;
-        }
-
-        @Override
-        public int getCount() {
-            HiLog.warn(LABEL_LOG, "getCount: ");
-            return fractions.size();
-        }
-
-        @Override
-        public Object createPageInContainer(ComponentContainer componentContainer, int i) {
-            try {
-
-                EmojiconGridFraction component = fractions.get(i);
-                componentContainer.removeAllComponents();
-                componentContainer.addComponent(component);
-            } catch (Exception ex) {
-                HiLog.warn(LABEL_LOG, "Exception: " + ex);
-
-            }
-            return componentContainer;
-        }
-
-        @Override
-        public void destroyPageFromContainer(ComponentContainer componentContainer, int i, Object o) {
-            HiLog.warn(LABEL_LOG, "destroyPageFromContainer: ");
-
-        }
-
-        @Override
-        public boolean isPageMatchToObject(Component component, Object o) {
-            HiLog.warn(LABEL_LOG, "isPageMatchToObject: ");
-            return false;
-        }
-    }
-
-    private OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener;
 
     public void setOnEmojiIconBackspaceClickedListener(OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener) {
         this.onEmojiIconBackspaceClickedListener = onEmojiIconBackspaceClickedListener;
@@ -225,5 +142,109 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
     public interface OnEmojiIconBackspaceClickedListener {
         void onEmojiIconBackspaceClicked(Component c);
     }
+    //#endregion Event handler
+
+    //#region inner classes
+    private static class EmojiPagerAdapter extends PageSliderProvider {
+        private final List<EmojiconGridFraction> fractions;
+
+        public EmojiPagerAdapter(List<EmojiconGridFraction> fractions) {
+            this.fractions = fractions;
+        }
+
+        @Override
+        public int getCount() {
+            return fractions.size();
+        }
+
+        @Override
+        public Object createPageInContainer(ComponentContainer componentContainer, int i) {
+            EmojiconGridFraction component = fractions.get(i);
+            componentContainer.removeAllComponents();
+            componentContainer.addComponent(component.getComponent());
+
+            return componentContainer;
+        }
+
+        @Override
+        public void destroyPageFromContainer(ComponentContainer componentContainer, int i, Object o) {
+            componentContainer.removeAllComponents();
+        }
+
+        @Override
+        public boolean isPageMatchToObject(Component component, Object o) {
+            return false;
+        }
+    }
+
+    /**
+     * A class, that can be used as a TouchListener on any view (e.g. a Button).
+     * It cyclically runs a clickListener, emulating keyboard-like behaviour. First
+     * click is fired immediately, next before initialInterval, and subsequent before
+     * normalInterval.
+     * <p/>
+     * <p>Interval is scheduled before the onClick completes, so it has to run fast.
+     * If it runs slow, it does not generate skipped onClicks.
+     */
+    public static class RepeatListener implements Component.TouchEventListener {
+        private final int normalInterval;
+        private Component downView;
+        private final Component.ClickedListener clickListener;
+        private final EventHandler handler;
+        private final int initialInterval;
+        private final Runnable handlerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (downView == null) {
+                    return;
+                }
+                handler.removeAllEvent();
+                handler.postTask(this, normalInterval);
+                clickListener.onClick(downView);
+            }
+        };
+
+
+        /**
+         * @param initialInterval The interval before first click event
+         * @param normalInterval  The interval before second and subsequent click
+         *                        events
+         * @param clickListener   The OnClickListener, that will be called
+         *                        periodically
+         */
+        public RepeatListener(int initialInterval, int normalInterval, Component.ClickedListener clickListener) {
+            handler = new EventHandler(EventRunner.getMainEventRunner());
+            if (clickListener == null)
+                throw new IllegalArgumentException("null runnable");
+            if (initialInterval < 0 || normalInterval < 0)
+                throw new IllegalArgumentException("negative interval");
+
+            this.initialInterval = initialInterval;
+            this.normalInterval = normalInterval;
+            this.clickListener = clickListener;
+        }
+
+
+        @Override
+        public boolean onTouchEvent(Component component, TouchEvent touchEvent) {
+            switch (touchEvent.getAction()) {
+                case TouchEvent.PRIMARY_POINT_DOWN:
+                case TouchEvent.OTHER_POINT_DOWN:
+                    downView = component;
+                    handler.removeTask(handlerRunnable);
+                    handler.postTask(handlerRunnable, initialInterval);
+                    clickListener.onClick(component);
+                    return true;
+                case TouchEvent.OTHER_POINT_UP:
+                case TouchEvent.PRIMARY_POINT_UP:
+                case TouchEvent.CANCEL:
+                    handler.removeAllEvent();
+                    downView = null;
+                    return true;
+            }
+            return false;
+        }
+    }
+    //#endregion inner classes
 
 }
