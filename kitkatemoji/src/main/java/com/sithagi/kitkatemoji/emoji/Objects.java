@@ -1,6 +1,8 @@
 package com.sithagi.kitkatemoji.emoji;
 
 /**
+ * Object emoji icon sets.
+ *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class Objects {
@@ -93,7 +95,7 @@ public class Objects {
             Emojicon.fromCodePoint(0x1f4e7),
             Emojicon.fromCodePoint(0x1f4e5),
             Emojicon.fromCodePoint(0x1f4e4),
-//            Emojicon.fromChar((char) 0x2709),
+            // Emojicon.fromChar((char) 0x2709),
             Emojicon.fromCodePoint(0x1f4e9),
             Emojicon.fromCodePoint(0x1f4e8),
             Emojicon.fromCodePoint(0x1f4ef),
@@ -117,11 +119,11 @@ public class Objects {
             Emojicon.fromCodePoint(0x1f4c7),
             Emojicon.fromCodePoint(0x1f4c1),
             Emojicon.fromCodePoint(0x1f4c2),
-//            Emojicon.fromChar((char) 0x2702),
+            // Emojicon.fromChar((char) 0x2702),
             Emojicon.fromCodePoint(0x1f4cc),
             Emojicon.fromCodePoint(0x1f4ce),
-//            Emojicon.fromChar((char) 0x2712),
-//            Emojicon.fromChar((char) 0x270f),
+            // Emojicon.fromChar((char) 0x2712),
+            // Emojicon.fromChar((char) 0x270f),
             Emojicon.fromCodePoint(0x1f4cf),
             Emojicon.fromCodePoint(0x1f4d0),
             Emojicon.fromCodePoint(0x1f4d5),

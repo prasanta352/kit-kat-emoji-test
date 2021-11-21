@@ -1,17 +1,31 @@
 package com.sithagi.kitkatemoji;
 
-import com.sithagi.kitkatemoji.emoji.*;
+
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.*;
+import ohos.agp.components.Button;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.LayoutScatter;
+import ohos.agp.components.PageSlider;
+import ohos.agp.components.PageSliderProvider;
+import ohos.agp.components.TextField;
 import ohos.app.Context;
 import ohos.eventhandler.EventHandler;
 import ohos.eventhandler.EventRunner;
 import ohos.multimodalinput.event.TouchEvent;
-
+import com.sithagi.kitkatemoji.emoji.Emojicon;
+import com.sithagi.kitkatemoji.emoji.Nature;
+import com.sithagi.kitkatemoji.emoji.Objects;
+import com.sithagi.kitkatemoji.emoji.People;
+import com.sithagi.kitkatemoji.emoji.Places;
+import com.sithagi.kitkatemoji.emoji.Symbols;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * EmojiconsFraction.
+ */
 public class EmojiconsFraction extends Fraction implements PageSlider.PageChangedListener,
         EmojiIconProvider.OnEmojiIconClickedListener {
     private final Context context;
@@ -24,21 +38,38 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         this.context = context;
     }
 
+    /**
+     * insert a emoji to the input.
+     *
+     * @param textField textField to operate the input operation
+     * @param emojicon  emojiIcon to insert to the input
+     */
     public void input(TextField textField, Emojicon emojicon) {
-        if (emojicon == null || textField == null) return;
+        if (emojicon == null || textField == null) {
+            return;
+        }
         // TODO: find a better solution for this
         // because there is no api for putting character based on cursor position
         // so for now we are appending new emoji to the end of the text
         textField.append(emojicon.getEmoji());
     }
 
+    /**
+     * trigger a backspace in text field to remove a emoji or a character.
+     *
+     * @param textField textField to operate on the backspace action
+     */
     public void backspace(TextField textField) {
         // TODO: find a better solution for this maybe there is a api for it ??
         // because there is no api for removing character based on cursor position
         // so for now we are removing character from end of the text
-        if (textField == null) return;
+        if (textField == null) {
+            return;
+        }
         String txt = textField.getText();
-        if (txt.isEmpty()) return;
+        if (txt.isEmpty()) {
+            return;
+        }
         String finalString = txt.substring(0, txt.length() - 1);
         textField.setText(finalString);
     }
@@ -75,11 +106,13 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
         }
 
-        rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener(new RepeatListener(1000, 50, c -> {
-            if (onEmojiIconBackspaceClickedListener != null) {
-                onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(c);
-            }
-        }));
+        rootComponent.findComponentById(ResourceTable.Id_emojis_backspace).setTouchEventListener(
+                new RepeatListener(1000, 50, component -> {
+                    if (onEmojiIconBackspaceClickedListener != null) {
+                        onEmojiIconBackspaceClickedListener.onEmojiIconBackspaceClicked(component);
+                    }
+                })
+        );
 
         onPageChosen(0);
         return rootComponent;
@@ -113,6 +146,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
                 mEmojiTabs[i].setSelected(true);
                 mEmojiTabLastSelectedIndex = i;
                 break;
+            default:
+                break;
         }
     }
 
@@ -127,10 +162,14 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
         }
     }
 
-    public void setOnEmojiIconBackspaceClickedListener(OnEmojiIconBackspaceClickedListener onEmojiIconBackspaceClickedListener) {
+    public void setOnEmojiIconBackspaceClickedListener(OnEmojiIconBackspaceClickedListener
+                                                               onEmojiIconBackspaceClickedListener) {
         this.onEmojiIconBackspaceClickedListener = onEmojiIconBackspaceClickedListener;
     }
 
+    /**
+     * listener for when the backspace button is clicked.
+     */
     public interface OnEmojiIconBackspaceClickedListener {
         void onEmojiIconBackspaceClicked(Component c);
     }
@@ -175,6 +214,7 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
      * click is fired immediately, next before initialInterval, and subsequent before
      * normalInterval.
      * <p/>
+     *
      * <p>Interval is scheduled before the onClick completes, so it has to run fast.
      * If it runs slow, it does not generate skipped onClicks.
      */
@@ -198,6 +238,8 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
 
 
         /**
+         * RepeatListener.
+         *
          * @param initialInterval The interval before first click event
          * @param normalInterval  The interval before second and subsequent click
          *                        events
@@ -206,10 +248,12 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
          */
         public RepeatListener(int initialInterval, int normalInterval, Component.ClickedListener clickListener) {
             handler = new EventHandler(EventRunner.getMainEventRunner());
-            if (clickListener == null)
+            if (clickListener == null) {
                 throw new IllegalArgumentException("null runnable");
-            if (initialInterval < 0 || normalInterval < 0)
+            }
+            if (initialInterval < 0 || normalInterval < 0) {
                 throw new IllegalArgumentException("negative interval");
+            }
 
             this.initialInterval = initialInterval;
             this.normalInterval = normalInterval;
@@ -233,8 +277,9 @@ public class EmojiconsFraction extends Fraction implements PageSlider.PageChange
                     handler.removeAllEvent();
                     downView = null;
                     return true;
+                default:
+                    return false;
             }
-            return false;
         }
     }
     //#endregion inner classes

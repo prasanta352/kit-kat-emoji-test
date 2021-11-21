@@ -1,17 +1,31 @@
 package com.sithagi.kitkatemoji;
 
-import com.sithagi.kitkatemoji.emoji.Emojicon;
-import ohos.agp.components.*;
+import ohos.agp.components.BaseItemProvider;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.DirectionalLayout;
+import ohos.agp.components.LayoutScatter;
 import ohos.app.Context;
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 
+/**
+ * EmojiIconProvider to render a single emoji icon.
+ */
 public class EmojiIconProvider extends BaseItemProvider {
-    private Emojicon[] list;
-    private Context slice;
-    private OnEmojiIconClickedListener onEmojiIconClickedListener;
+    private final Emojicon[] list;
+    private final Context slice;
+    private final OnEmojiIconClickedListener onEmojiIconClickedListener;
 
-    public EmojiIconProvider(Emojicon[] list, Context ability, OnEmojiIconClickedListener onEmojiIconClickedListener) {
+    /**
+     * constructor for creating a EmojiIconProvider.
+     *
+     * @param list list of the emoji icons
+     * @param context application context
+     * @param onEmojiIconClickedListener click listener for when an emoji icon is clicked
+     */
+    public EmojiIconProvider(Emojicon[] list, Context context, OnEmojiIconClickedListener onEmojiIconClickedListener) {
         this.list = list;
-        this.slice = ability;
+        this.slice = context;
         this.onEmojiIconClickedListener = onEmojiIconClickedListener;
     }
 
@@ -57,6 +71,9 @@ public class EmojiIconProvider extends BaseItemProvider {
         return cpt;
     }
 
+    /**
+     * Click listener for the EmojiIconProvider.
+     */
     public interface OnEmojiIconClickedListener {
         void onEmojiIconClicked(Emojicon emojicon);
     }

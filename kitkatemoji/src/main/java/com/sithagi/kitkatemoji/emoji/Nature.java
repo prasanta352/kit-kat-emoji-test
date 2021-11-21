@@ -1,6 +1,8 @@
 package com.sithagi.kitkatemoji.emoji;
 
 /**
+ * Nature emoji icon sets.
+ *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class Nature {

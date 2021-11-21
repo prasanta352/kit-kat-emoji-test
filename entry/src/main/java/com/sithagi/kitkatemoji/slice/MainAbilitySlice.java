@@ -1,9 +1,12 @@
 package com.sithagi.kitkatemoji.slice;
 
-import com.sithagi.kitkatemoji.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
+import com.sithagi.kitkatemoji.ResourceTable;
 
+/**
+ * MainAbilitySlice.
+ */
 public class MainAbilitySlice extends AbilitySlice {
     @Override
     public void onStart(Intent intent) {

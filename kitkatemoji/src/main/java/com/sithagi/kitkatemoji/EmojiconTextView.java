@@ -4,6 +4,9 @@ import ohos.agp.components.AttrSet;
 import ohos.agp.components.Text;
 import ohos.app.Context;
 
+/**
+ * A custom text view to render emoji icon.
+ */
 public class EmojiconTextView extends Text {
     private int mEmojiconSize;
 
@@ -27,18 +30,24 @@ public class EmojiconTextView extends Text {
     private void init(AttrSet attrSet) {
         mEmojiconSize = getTextSize();
         if (attrSet != null) {
-            attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE).ifPresent(attr -> mEmojiconSize = attr.getDimensionValue());
+            attrSet.getAttr(EmojiconTextViewAttrsConstants.ATTR_EMOJI_ICON_SIZE)
+                    .ifPresent(attr -> mEmojiconSize = attr.getDimensionValue());
         }
         setTextSize(mEmojiconSize);
     }
 
     /**
      * Set the size of emojicon in pixels.
+     *
+     * @param pixels pixel
      */
     public void setEmojiconSize(int pixels) {
         mEmojiconSize = pixels;
     }
 
+    /**
+     * custom attr constants.
+     */
     public static class EmojiconTextViewAttrsConstants {
         //if set to true, arrow will be shown on right side of the text
         public static final String ATTR_EMOJI_ICON_SIZE = "emojiconSize";

@@ -6,67 +6,65 @@ import ohos.agp.components.Component;
 import ohos.agp.components.DirectionalLayout;
 import ohos.agp.components.Image;
 import ohos.agp.components.TextField;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
 
 
+/**
+ * MainAbility.
+ */
 public class MainAbility extends FractionAbility {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
     TextField messageEd;
     DirectionalLayout emojiIconsCover;
-    Image btn_chat_emoji;
+    EmojiconsFraction emojiconsFraction;
+    EmojiconTextView messageTx;
+    Image btnChatEmoji;
     boolean isEmojiVisible = false;
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
-        try {
-            super.setUIContent(ResourceTable.Layout_ability_main);
 
-            EmojiconsFraction emojiconsFraction = new EmojiconsFraction(getContext());
+        super.setUIContent(ResourceTable.Layout_ability_main);
 
-            messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
-            EmojiconTextView messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
-            emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
-            btn_chat_emoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
-            Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
+        emojiconsFraction = new EmojiconsFraction(getContext());
 
-            messageEd.setClickedListener(component -> {
-                if (isEmojiVisible) {
-                    component.clearFocus();
-                } else {
-                    component.requestFocus();
-                }
-            });
+        messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
+        messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
+        emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
+        btnChatEmoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
+        Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
+
+        messageEd.setClickedListener(component -> {
+            if (isEmojiVisible) {
+                component.clearFocus();
+            } else {
+                component.requestFocus();
+            }
+        });
 
 
-            sendButton.setClickedListener(c -> {
-                String chat = messageEd.getText().trim();
-                if (!chat.isEmpty()) {
-                    messageTx.setText(chat);
-                    messageEd.setText("");
+        sendButton.setClickedListener(c -> {
+            String chat = messageEd.getText().trim();
+            if (!chat.isEmpty()) {
+                messageTx.setText(chat);
+                messageEd.setText("");
 
-                }
-                if (isEmojiVisible) {
-                    changeEmojiLayout();
-                }
+            }
+            if (isEmojiVisible) {
+                changeEmojiLayout();
+            }
 
-            });
+        });
 
-            btn_chat_emoji.setClickedListener(c -> changeEmojiLayout());
+        btnChatEmoji.setClickedListener(c -> changeEmojiLayout());
 
-            emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> emojiconsFraction.input(messageEd, emojicon));
+        emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> emojiconsFraction.input(messageEd, emojicon));
 
-            emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> emojiconsFraction.backspace(messageEd));
+        emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> emojiconsFraction.backspace(messageEd));
 
-            getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction).submit();
+        getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction)
+                .submit();
 
-        } catch (Exception ex) {
-//            HiLog.warn(LABEL_LOG, "MainAbility: onStart  " + ex);
-//            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
-//                HiLog.warn(LABEL_LOG, "" + stackTraceElement);
-//            }
-        }
+
     }
 
 
@@ -74,7 +72,7 @@ public class MainAbility extends FractionAbility {
         // TODO: find a way to set it so when the soft-keyboard shows up the message send footer
         // goes up with it
         if (isEmojiVisible) {
-            btn_chat_emoji
+            btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_smileys);
             emojiIconsCover
                     .setVisibility(Component.HIDE);
@@ -83,7 +81,7 @@ public class MainAbility extends FractionAbility {
             isEmojiVisible = false;
             messageEd.requestFocus();
         } else {
-            btn_chat_emoji
+            btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_keypad);
             emojiIconsCover
                     .setVisibility(Component.VISIBLE);

@@ -1,29 +1,53 @@
 package com.sithagi.kitkatemoji;
 
-import com.sithagi.kitkatemoji.emoji.Emojicon;
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.*;
+import ohos.agp.components.AttrHelper;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.LayoutScatter;
+import ohos.agp.components.ListContainer;
+import ohos.agp.components.TableLayoutManager;
 import ohos.agp.utils.Point;
 import ohos.agp.window.service.Display;
 import ohos.agp.window.service.DisplayManager;
 import ohos.app.Context;
-
+import com.sithagi.kitkatemoji.emoji.Emojicon;
 import java.util.Optional;
 
+/**
+ * EmojiconGridFraction.
+ */
 public class EmojiconGridFraction extends Fraction implements EmojiIconProvider.OnEmojiIconClickedListener {
 
-    private final Emojicon[] mData;
+    private final Emojicon[] emojicons;
     private EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener;
     Component component;
     Context context;
 
-    protected static EmojiconGridFraction newInstance(Context context, Emojicon[] emojicons, EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener) {
-        EmojiconGridFraction emojiGridFragment = new EmojiconGridFraction(context, emojicons);
-        emojiGridFragment.setOnEmojiIconClickedListener(onEmojiIconClickedListener);
-        return emojiGridFragment;
+    /**
+     * Create a EmojiGridFraction instance.
+     *
+     * @param context                    application context
+     * @param emojicons                  list of emojiIcons
+     * @param onEmojiIconClickedListener onItemClick listener
+     * @return instance of a EmojiconGridFraction
+     */
+    protected static EmojiconGridFraction newInstance(
+            Context context,
+            Emojicon[] emojicons,
+            EmojiIconProvider.OnEmojiIconClickedListener onEmojiIconClickedListener
+    ) {
+        EmojiconGridFraction emojiGridFraction = new EmojiconGridFraction(context, emojicons);
+        emojiGridFraction.setOnEmojiIconClickedListener(onEmojiIconClickedListener);
+        return emojiGridFraction;
     }
 
+    /**
+     * get device screen width.
+     *
+     * @return screen width
+     */
     private int getScreenWidth() {
         DisplayManager displayManager = DisplayManager.getInstance();
         Optional<Display> optDisplay = displayManager.getDefaultDisplay(context);
@@ -35,9 +59,15 @@ public class EmojiconGridFraction extends Fraction implements EmojiIconProvider.
         return (int) point.position[0];
     }
 
-    public EmojiconGridFraction(Context context, Emojicon[] mData) {
+    /**
+     * EmojiconGridFraction.
+     *
+     * @param context   application context
+     * @param emojicons emojiIcon list
+     */
+    public EmojiconGridFraction(Context context, Emojicon[] emojicons) {
         this.context = context;
-        this.mData = mData;
+        this.emojicons = emojicons;
     }
 
     @Override
@@ -55,14 +85,14 @@ public class EmojiconGridFraction extends Fraction implements EmojiIconProvider.
         );
 
         ListContainer listContainer = (ListContainer) component.findComponentById(ResourceTable.Id_Emoji_GridView);
-        TableLayoutManager tableLayoutManager = new TableLayoutManager();
-        EmojiIconProvider emojiIconProvider = new EmojiIconProvider(mData, context, this);
+        final TableLayoutManager tableLayoutManager = new TableLayoutManager();
+        final EmojiIconProvider emojiIconProvider = new EmojiIconProvider(emojicons, context, this);
 
         int screenWidth = getScreenWidth();
         int cols = screenWidth / AttrHelper.fp2px(34f, context);
 
         tableLayoutManager.setColumnCount(cols);
-        tableLayoutManager.setRowCount(mData.length / cols);
+        tableLayoutManager.setRowCount(emojicons.length / cols);
 
         listContainer.setLayoutManager(tableLayoutManager);
         listContainer.setItemProvider(emojiIconProvider);

@@ -1,6 +1,8 @@
 package com.sithagi.kitkatemoji.emoji;
 
 /**
+ * Places emoji icon sets.
+ *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class Places {
@@ -43,7 +45,7 @@ public class Places {
             Emojicon.fromCodePoint(0x1f6a3),
             Emojicon.fromChar((char) 0x2693),
             Emojicon.fromCodePoint(0x1f680),
-//            Emojicon.fromChar((char) 0x2708),
+            // Emojicon.fromChar((char) 0x2708),
             Emojicon.fromCodePoint(0x1f4ba),
             Emojicon.fromCodePoint(0x1f681),
             Emojicon.fromCodePoint(0x1f682),
@@ -84,13 +86,13 @@ public class Places {
             Emojicon.fromCodePoint(0x1f3ab),
             Emojicon.fromCodePoint(0x1f6a6),
             Emojicon.fromCodePoint(0x1f6a5),
-//            Emojicon.fromChar((char) 0x26a0),
+            // Emojicon.fromChar((char) 0x26a0),
             Emojicon.fromCodePoint(0x1f6a7),
             Emojicon.fromCodePoint(0x1f530),
             Emojicon.fromChar((char) 0x26fd),
             Emojicon.fromCodePoint(0x1f3ee),
             Emojicon.fromCodePoint(0x1f3b0),
-//            Emojicon.fromChar((char) 0x2668),
+            // Emojicon.fromChar((char) 0x2668),
             Emojicon.fromCodePoint(0x1f5ff),
             Emojicon.fromCodePoint(0x1f3aa),
             Emojicon.fromCodePoint(0x1f3ad),

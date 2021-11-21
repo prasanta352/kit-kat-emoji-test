@@ -1,6 +1,8 @@
 package com.sithagi.kitkatemoji.emoji;
 
 /**
+ * People icon emoji sets.
+ *
  * @author Chathura Wijesinghe (cdanasiri@gmail.com)
  */
 public class People {
