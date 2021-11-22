@@ -2,6 +2,8 @@ package com.sithagi.kitkatemoji;
 
 import ohos.aafwk.ability.fraction.FractionAbility;
 import ohos.aafwk.content.Intent;
+import ohos.accessibility.ability.AccessibleAbility;
+import ohos.accessibility.ability.SoftKeyBoardController;
 import ohos.agp.components.Component;
 import ohos.agp.components.DirectionalLayout;
 import ohos.agp.components.Image;
@@ -80,13 +82,27 @@ public class MainAbility extends FractionAbility {
                     .setVisibility(Component.HIDE);
             isEmojiVisible = false;
             messageEd.requestFocus();
+            hideKeyBoard();
         } else {
             btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_keypad);
             emojiIconsCover
                     .setVisibility(Component.VISIBLE);
             isEmojiVisible = true;
+            showKeyBoard();
         }
+    }
+
+    void showKeyBoard() {
+        messageTx.requestFocus();
+        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+        ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+    }
+
+    void hideKeyBoard() {
+        messageEd.clearFocus();
+        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+        ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
     }
 
 
