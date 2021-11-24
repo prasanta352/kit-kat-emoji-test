@@ -8,6 +8,7 @@ import ohos.agp.components.Component;
 import ohos.agp.components.DirectionalLayout;
 import ohos.agp.components.Image;
 import ohos.agp.components.TextField;
+import static ohos.agp.window.service.WindowManager.LayoutConfig.INPUT_ADJUST_RESIZE;
 
 
 /**
@@ -26,6 +27,8 @@ public class MainAbility extends FractionAbility {
         super.onStart(intent);
 
         super.setUIContent(ResourceTable.Layout_ability_main);
+        getWindow().setInputPanelDisplayType(INPUT_ADJUST_RESIZE);
+
 
         emojiconsFraction = new EmojiconsFraction(getContext());
 
@@ -37,9 +40,9 @@ public class MainAbility extends FractionAbility {
 
         messageEd.setClickedListener(component -> {
             if (isEmojiVisible) {
-                component.clearFocus();
+                messageEd.clearFocus();
             } else {
-                component.requestFocus();
+                messageEd.requestFocus();
             }
         });
 
@@ -78,23 +81,20 @@ public class MainAbility extends FractionAbility {
                     .setPixelMap(ResourceTable.Media_ic_vp_smileys);
             emojiIconsCover
                     .setVisibility(Component.HIDE);
-            emojiIconsCover
-                    .setVisibility(Component.HIDE);
             isEmojiVisible = false;
-            messageEd.requestFocus();
-            hideKeyBoard();
+            showKeyBoard();
         } else {
             btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_keypad);
             emojiIconsCover
                     .setVisibility(Component.VISIBLE);
             isEmojiVisible = true;
-            showKeyBoard();
+            hideKeyBoard();
         }
     }
 
     void showKeyBoard() {
-        messageTx.requestFocus();
+        messageEd.requestFocus();
         SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
         ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
     }
