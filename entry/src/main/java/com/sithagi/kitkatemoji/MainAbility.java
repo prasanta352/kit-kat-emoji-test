@@ -20,7 +20,7 @@ public class MainAbility extends FractionAbility {
     EmojiconsFraction emojiconsFraction;
     EmojiconTextView messageTx;
     Image btnChatEmoji;
-    boolean isEmojiVisible = false;
+    boolean isEmojiKeyboardVisible = false;
 
     @Override
     public void onStart(Intent intent) {
@@ -39,7 +39,7 @@ public class MainAbility extends FractionAbility {
         Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
 
         messageEd.setClickedListener(component -> {
-            if (isEmojiVisible) {
+            if (isEmojiKeyboardVisible) {
                 messageEd.clearFocus();
             } else {
                 messageEd.requestFocus();
@@ -54,7 +54,7 @@ public class MainAbility extends FractionAbility {
                 messageEd.setText("");
 
             }
-            if (isEmojiVisible) {
+            if (isEmojiKeyboardVisible) {
                 changeEmojiLayout();
             }
 
@@ -76,19 +76,19 @@ public class MainAbility extends FractionAbility {
     protected void changeEmojiLayout() {
         // TODO: find a way to set it so when the soft-keyboard shows up the message send footer
         // goes up with it
-        if (isEmojiVisible) {
+        if (isEmojiKeyboardVisible) {
             btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_smileys);
             emojiIconsCover
                     .setVisibility(Component.HIDE);
-            isEmojiVisible = false;
+            isEmojiKeyboardVisible = false;
             showKeyBoard();
         } else {
             btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_keypad);
             emojiIconsCover
                     .setVisibility(Component.VISIBLE);
-            isEmojiVisible = true;
+            isEmojiKeyboardVisible = true;
             hideKeyBoard();
         }
     }
