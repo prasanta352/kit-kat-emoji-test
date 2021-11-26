@@ -12,33 +12,77 @@
         ohos:padding="12fp"
         ohos:alignment="center"
         ohos:width="match_parent"
-        ohos:background_element="#000">
+        ohos:orientation="vertical"
+        ohos:background_element="#000"
+        >
 
-        <com.sithagi.kitkatemoji.EmojiconTextView
+        <TextField
             ohos:id="$+id:txt_sentMessage"
             ohos:height="match_content"
             ohos:width="match_parent"
             ohos:background_element="#fff"
             ohos:text="Hello"
             ohos:padding="12vp"
-            custom:emojiconSize="24fp"
+            ohos:text_size="24fp"
+            />
+        <Button
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:id="$+id:openKeyboard"
+            ohos:text="openKeyboard"
+            ohos:text_size="24fp"
+            ohos:margin="12vp"
+            ohos:padding="12vp"
+            ohos:background_element="#fff"
+            />
+        <Button
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:text="closeKeyboard"
+            ohos:id="$+id:closeKeyboard"
+            ohos:text_size="24fp"
+            ohos:margin="12vp"
+            ohos:padding="12vp"
+            ohos:background_element="#fff"
+
+            />
+        <Button
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:id="$+id:focusKeyboard"
+            ohos:text="focus"
+            ohos:text_size="24fp"
+            ohos:margin="12vp"
+            ohos:padding="12vp"
+            ohos:background_element="#fff"
+            />
+        <Button
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:text="un-focus"
+            ohos:id="$+id:unFocusKeyboard"
+            ohos:text_size="24fp"
+            ohos:margin="12vp"
+            ohos:padding="12vp"
+            ohos:background_element="#fff"
+
             />
     </DirectionalLayout>
 
 
-    <include
-        ohos:height="match_content"
-        ohos:width="match_parent"
-        ohos:layout="$layout:emoji_footer"/>
+<!--    <include-->
+<!--        ohos:height="match_content"-->
+<!--        ohos:width="match_parent"-->
+<!--        ohos:layout="$layout:emoji_footer"/>-->
 
 
-    <DirectionalLayout
-        ohos:id="$+id:main_fraction"
-        ohos:height="250vp"
-        ohos:width="match_parent"
-        ohos:visibility="hide"
-        ohos:background_element="#FFFFEEAD"
-        />
+<!--    <DirectionalLayout-->
+<!--        ohos:id="$+id:main_fraction"-->
+<!--        ohos:height="250vp"-->
+<!--        ohos:width="match_parent"-->
+<!--        ohos:visibility="hide"-->
+<!--        ohos:background_element="#FFFFEEAD"-->
+<!--        />-->
 
 
 </DirectionalLayout>

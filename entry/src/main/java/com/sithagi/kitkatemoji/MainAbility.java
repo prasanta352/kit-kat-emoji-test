@@ -2,25 +2,35 @@ package com.sithagi.kitkatemoji;
 
 import ohos.aafwk.ability.fraction.FractionAbility;
 import ohos.aafwk.content.Intent;
+import ohos.accessibility.AccessibilityEventInfo;
 import ohos.accessibility.ability.AccessibleAbility;
 import ohos.accessibility.ability.SoftKeyBoardController;
+import ohos.accessibility.ability.SoftKeyBoardListener;
 import ohos.agp.components.Component;
+import ohos.agp.components.TextField;
 import ohos.agp.components.DirectionalLayout;
 import ohos.agp.components.Image;
 import ohos.agp.components.TextField;
+import ohos.agp.utils.LayoutAlignment;
+import ohos.agp.window.dialog.ToastDialog;
+import ohos.hiviewdfx.HiLog;
+import ohos.hiviewdfx.HiLogLabel;
+import ohos.miscservices.inputmethodability.InputMethodAbility;
+
 import static ohos.agp.window.service.WindowManager.LayoutConfig.INPUT_ADJUST_RESIZE;
 
 
 /**
  * MainAbility.
  */
-public class MainAbility extends FractionAbility {
+public class MainAbility extends AccessibleAbility  {
     TextField messageEd;
     DirectionalLayout emojiIconsCover;
     EmojiconsFraction emojiconsFraction;
-    EmojiconTextView messageTx;
+    TextField messageTx;
     Image btnChatEmoji;
     boolean isEmojiKeyboardVisible = false;
+    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
 
     @Override
     public void onStart(Intent intent) {
@@ -28,46 +38,75 @@ public class MainAbility extends FractionAbility {
 
         super.setUIContent(ResourceTable.Layout_ability_main);
         getWindow().setInputPanelDisplayType(INPUT_ADJUST_RESIZE);
+        messageTx = (TextField) findComponentById(ResourceTable.Id_txt_sentMessage);
 
+        findComponentById(ResourceTable.Id_openKeyboard).setClickedListener(c -> {
+            showKeyBoard();
+        });
 
-        emojiconsFraction = new EmojiconsFraction(getContext());
-
-        messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
-        messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
-        emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
-        btnChatEmoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
-        Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
-
-        messageEd.setClickedListener(component -> {
-            if (isEmojiKeyboardVisible) {
-                messageEd.clearFocus();
-            } else {
-                messageEd.requestFocus();
-            }
+        findComponentById(ResourceTable.Id_closeKeyboard).setClickedListener(c -> {
+            hideKeyBoard();
         });
 
 
-        sendButton.setClickedListener(c -> {
-            String chat = messageEd.getText().trim();
-            if (!chat.isEmpty()) {
-                messageTx.setText(chat);
-                messageEd.setText("");
-
-            }
-            if (isEmojiKeyboardVisible) {
-                changeEmojiLayout();
-            }
-
+        findComponentById(ResourceTable.Id_focusKeyboard).setClickedListener(c -> {
+            messageTx.requestFocus();
+            new ToastDialog(getContext()).setText("MainAbility: requestFocus " ).setAlignment(LayoutAlignment.BOTTOM).show();
         });
 
-        btnChatEmoji.setClickedListener(c -> changeEmojiLayout());
 
-        emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> emojiconsFraction.input(messageEd, emojicon));
+        findComponentById(ResourceTable.Id_unFocusKeyboard).setClickedListener(c -> {
+            messageTx.clearFocus();
+            new ToastDialog(getContext()).setText("MainAbility: clearFocus " ).setAlignment(LayoutAlignment.BOTTOM).show();
+        });
 
-        emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> emojiconsFraction.backspace(messageEd));
 
-        getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction)
-                .submit();
+
+        getSoftKeyBoardController().addListener((softKeyBoardController, i) -> {
+            HiLog.warn(LABEL_LOG, "MainAbility: onSoftKeyBoardShowModeChanged " + i);
+            new ToastDialog(getContext()).setText("MainAbility: onSoftKeyBoardShowModeChanged " + i).setAlignment(LayoutAlignment.BOTTOM).show();
+
+        });
+//
+//
+//        emojiconsFraction = new EmojiconsFraction(getContext());
+//
+//        messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
+//        messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
+//        emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
+//        btnChatEmoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
+//        Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
+//
+//        messageEd.setClickedListener(component -> {
+//            if (isEmojiKeyboardVisible) {
+//                messageEd.clearFocus();
+//            } else {
+//                messageEd.requestFocus();
+//            }
+//        });
+//
+//
+//        sendButton.setClickedListener(c -> {
+//            String chat = messageEd.getText().trim();
+//            if (!chat.isEmpty()) {
+//                messageTx.setText(chat);
+//                messageEd.setText("");
+//
+//            }
+//            if (isEmojiKeyboardVisible) {
+//                changeEmojiLayout();
+//            }
+//
+//        });
+//
+//        btnChatEmoji.setClickedListener(c -> changeEmojiLayout());
+//
+//        emojiconsFraction.setOnEmojiIconClickedListener(emojicon -> emojiconsFraction.input(messageEd, emojicon));
+//
+//        emojiconsFraction.setOnEmojiIconBackspaceClickedListener(c -> emojiconsFraction.backspace(messageEd));
+//
+//        getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction)
+//                .submit();
 
 
     }
@@ -94,16 +133,44 @@ public class MainAbility extends FractionAbility {
     }
 
     void showKeyBoard() {
-        messageEd.requestFocus();
-        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-        ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+//        messageEd.requestFocus();
+        try {
+            HiLog.warn(LABEL_LOG, "MainAbility: showKeyBoard");
+            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+            ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+
+            new ToastDialog(getContext()).setText("showKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
+        } catch (Exception ex) {
+            for (StackTraceElement st : ex.getStackTrace()) {
+                HiLog.warn(LABEL_LOG, "" + st);
+            }
+        }
     }
 
     void hideKeyBoard() {
-        messageEd.clearFocus();
-        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-        ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
+//        messageEd.clearFocus();
+        try {
+            new ToastDialog(getContext()).setText("hideKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
+            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
+            HiLog.warn(LABEL_LOG, "MainAbility: hideKeyBoard");
+            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+            ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
+        } catch (Exception ex) {
+            for (StackTraceElement st : ex.getStackTrace()) {
+                HiLog.warn(LABEL_LOG, "" + st);
+            }
+        }
     }
 
 
+    @Override
+    public void onAccessibilityEvent(AccessibilityEventInfo accessibilityEventInfo) {
+
+    }
+
+    @Override
+    public void onInterrupt() {
+
+    }
 }
