@@ -18,7 +18,7 @@ public class MainAbility extends FractionAbility {
     TextField messageEd;
     DirectionalLayout emojiIconsCover;
     EmojiconsFraction emojiconsFraction;
-    EmojiconTextView messageTx;
+    TextField messageTx;
     Image btnChatEmoji;
     boolean isEmojiKeyboardVisible = false;
 
@@ -33,7 +33,7 @@ public class MainAbility extends FractionAbility {
         emojiconsFraction = new EmojiconsFraction(getContext());
 
         messageEd = (TextField) findComponentById(ResourceTable.Id_edit_chat_message);
-        messageTx = (EmojiconTextView) findComponentById(ResourceTable.Id_txt_sentMessage);
+        messageTx = (TextField) findComponentById(ResourceTable.Id_txt_sentMessage);
         emojiIconsCover = (DirectionalLayout) findComponentById(ResourceTable.Id_main_fraction);
         btnChatEmoji = (Image) findComponentById(ResourceTable.Id_btn_chat_emoji);
         Image sendButton = (Image) findComponentById(ResourceTable.Id_btn_send);
@@ -74,8 +74,6 @@ public class MainAbility extends FractionAbility {
 
 
     protected void changeEmojiLayout() {
-        // TODO: find a way to set it so when the soft-keyboard shows up the message send footer
-        // goes up with it
         if (isEmojiKeyboardVisible) {
             btnChatEmoji
                     .setPixelMap(ResourceTable.Media_ic_vp_smileys);
@@ -95,14 +93,11 @@ public class MainAbility extends FractionAbility {
 
     void showKeyBoard() {
         messageEd.requestFocus();
-        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-        ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+        messageTx.simulateClick();
     }
 
     void hideKeyBoard() {
         messageEd.clearFocus();
-        SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-        ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
     }
 
 
