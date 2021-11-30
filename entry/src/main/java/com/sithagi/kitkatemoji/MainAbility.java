@@ -23,7 +23,7 @@ import static ohos.agp.window.service.WindowManager.LayoutConfig.INPUT_ADJUST_RE
 /**
  * MainAbility.
  */
-public class MainAbility extends AccessibleAbility  {
+public class MainAbility extends AccessibleAbility {
     TextField messageEd;
     DirectionalLayout emojiIconsCover;
     EmojiconsFraction emojiconsFraction;
@@ -51,21 +51,19 @@ public class MainAbility extends AccessibleAbility  {
 
         findComponentById(ResourceTable.Id_focusKeyboard).setClickedListener(c -> {
             messageTx.requestFocus();
-            new ToastDialog(getContext()).setText("MainAbility: requestFocus " ).setAlignment(LayoutAlignment.BOTTOM).show();
+            new ToastDialog(getContext()).setText("MainAbility: requestFocus ").setAlignment(LayoutAlignment.BOTTOM).show();
         });
 
 
         findComponentById(ResourceTable.Id_unFocusKeyboard).setClickedListener(c -> {
             messageTx.clearFocus();
-            new ToastDialog(getContext()).setText("MainAbility: clearFocus " ).setAlignment(LayoutAlignment.BOTTOM).show();
+            new ToastDialog(getContext()).setText("MainAbility: clearFocus ").setAlignment(LayoutAlignment.BOTTOM).show();
         });
-
 
 
         getSoftKeyBoardController().addListener((softKeyBoardController, i) -> {
             HiLog.warn(LABEL_LOG, "MainAbility: onSoftKeyBoardShowModeChanged " + i);
-            new ToastDialog(getContext()).setText("MainAbility: onSoftKeyBoardShowModeChanged " + i).setAlignment(LayoutAlignment.BOTTOM).show();
-
+            new ToastDialog(getContext()).setText("MainAbility: onSoftKeyBoardShowModeChanged " + i).setAlignment(LayoutAlignment.TOP).show();
         });
 //
 //
@@ -107,10 +105,7 @@ public class MainAbility extends AccessibleAbility  {
 //
 //        getFractionManager().startFractionScheduler().add(ResourceTable.Id_main_fraction, emojiconsFraction)
 //                .submit();
-
-
     }
-
 
     protected void changeEmojiLayout() {
         // TODO: find a way to set it so when the soft-keyboard shows up the message send footer
@@ -132,37 +127,46 @@ public class MainAbility extends AccessibleAbility  {
         }
     }
 
-    void showKeyBoard() {
-//        messageEd.requestFocus();
-        try {
-            HiLog.warn(LABEL_LOG, "MainAbility: showKeyBoard");
-            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-            ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
-            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
-
-            new ToastDialog(getContext()).setText("showKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
-        } catch (Exception ex) {
-            for (StackTraceElement st : ex.getStackTrace()) {
-                HiLog.warn(LABEL_LOG, "" + st);
-            }
-        }
+    //    void showKeyBoard() {
+////        messageEd.requestFocus();
+//        try {
+//            HiLog.warn(LABEL_LOG, "MainAbility: showKeyBoard");
+//            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+//            ime.setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+//            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_AUTO);
+//
+//            new ToastDialog(getContext()).setText("showKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
+//        } catch (Exception ex) {
+//            for (StackTraceElement st : ex.getStackTrace()) {
+//                HiLog.warn(LABEL_LOG, "" + st);
+//            }
+//        }
+//    }
+//
+//    void hideKeyBoard() {
+////        messageEd.clearFocus();
+//        try {
+//            new ToastDialog(getContext()).setText("hideKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
+//            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
+//            HiLog.warn(LABEL_LOG, "MainAbility: hideKeyBoard");
+//            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
+//            ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
+//        } catch (Exception ex) {
+//            for (StackTraceElement st : ex.getStackTrace()) {
+//                HiLog.warn(LABEL_LOG, "" + st);
+//            }
+//        }
+//    }
+    private void showKeyBoard() {
+        messageTx.requestFocus();//set focus in text field
+        messageTx.simulateClick(); // brings keyboard up
+        new ToastDialog(getContext()).setText("showKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
     }
 
-    void hideKeyBoard() {
-//        messageEd.clearFocus();
-        try {
-            new ToastDialog(getContext()).setText("hideKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
-            getSoftKeyBoardController().setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
-            HiLog.warn(LABEL_LOG, "MainAbility: hideKeyBoard");
-            SoftKeyBoardController ime = new SoftKeyBoardController(AccessibleAbility.SHOW_MODE_AUTO, null);
-            ime.setShowMode(AccessibleAbility.SHOW_MODE_HIDE);
-        } catch (Exception ex) {
-            for (StackTraceElement st : ex.getStackTrace()) {
-                HiLog.warn(LABEL_LOG, "" + st);
-            }
-        }
+    private void hideKeyBoard() {
+        messageTx.clearFocus();
+        new ToastDialog(getContext()).setText("hideKeyBoard").setAlignment(LayoutAlignment.BOTTOM).show();
     }
-
 
     @Override
     public void onAccessibilityEvent(AccessibilityEventInfo accessibilityEventInfo) {
